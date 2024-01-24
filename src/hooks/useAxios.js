@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
+import env from '../schemas/envSchema'
 
 const useAxios = () => {
   const [data, setData] = useState(null)
@@ -7,7 +8,7 @@ const useAxios = () => {
   const [error, setError] = useState(null)
 
   const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080/api'
+    baseURL: env.VITE_DATABASE_URL
   })
 
   axiosInstance.interceptors.request.use(

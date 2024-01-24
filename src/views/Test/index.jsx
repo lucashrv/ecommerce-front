@@ -1,23 +1,19 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert } from '@mui/material';
-import { Snackbar } from '@mui/material';
-import { Slide } from '@mui/material';
-import MuiAlert from '@mui/material/Alert';
-import MessageBar from '../../components/MessageBar';
 import { useSelector, useDispatch } from 'react-redux'
 import { userActions, selectUser } from '../../redux/slices/userSlice'
 import { messageActions } from './../../redux/slices/messageSlice';
 import { selectMessage } from './../../redux/slices/messageSlice';
 import useApi from '../../hooks/useReactQuery'
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod'
+import testSchema from '../../schemas/testSchema';
 
 const Test = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const api = useApi()
-
-    const [openMessage, setOpenMessage] = useState(false)
 
     const {
         data,
@@ -32,7 +28,7 @@ const Test = () => {
 
     const {
         mutateAsync: mutateDelete
-    } = api.mutateDelete('get-products')
+    } = api.mutateDelete(['get-products'])
 
 
     const userList = useSelector(selectUser.list)
@@ -56,20 +52,12 @@ const Test = () => {
     const handleDelete = async (e) => {
         e.preventDefault()
 
-        // dispatch(messageActions.showMessage({
-        //     label: 'chegou',
-        //     variant: 'danger'
-        // }))
-
-
         try {
             const dest = await mutateDelete('/products/21')
             //
-            if(message.show) {
+            if (message.show) {
                 dispatch(messageActions.hideMessage())
-            }
-            //
-            if (!message.show) {
+            } else {
                 dispatch(messageActions.showMessage({
                     label: dest.statusText,
                     variant: 'success'
@@ -94,14 +82,6 @@ const Test = () => {
         navigate("/login")
     }
 
-    const openMessageBar = () => {
-        setOpenMessage(true)
-    }
-
-    const closeMessageBar = () => {
-        setOpenMessage(false)
-    }
-
     useEffect(() => {
         data &&
             dispatch(userActions.updateState({
@@ -111,73 +91,66 @@ const Test = () => {
             }))
     }, [data, isLoading, error, dispatch])
 
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm({
+        resolver: zodResolver(testSchema)
+    })
+    console.log('asd')
+    console.log(errors);
+    const handleForm = (data) => {
+        console.log(data);
+    }
+
     return (<>
         <div>
-            <ul>
-                <li>test1</li>
-                <li>test2</li>
-                <li>test3</li>
-            </ul>
-
-            <br />
-
-            <MessageBar
-                label='Sucesso'
-                open={openMessage}
-                onClose={closeMessageBar}
-                variant='warning'
-            />
 
             {userList &&
                 userList.map(item =>
                     (<p key={item.id}>{item.name}</p>)
                 )
             }
+            <br /><br /><br />
 
-            {openMessage && (<>
-                {/* <Alert variant="filled" severity="success">
-                    This is a filled success Alert.This is a filled success Alert.This is a filled success Alert.This is a filled success Alert.
-                </Alert> */}
-                {/* <Snackbar open={localState} autoHideDuration={6000} onClose={() => { }}>
-                    <Alert onClose={() => { }} severity="success" sx={{ width: '100%' }}>
-                        This is a success message!
-                    </Alert>
-                </Snackbar>
-                <Snackbar
-                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                    open={localState}
-                    onClose={() => { }}
-                    message="Position"
-                    key='{vertical + horizontal}'
-                /> */}
-                {/* <Snackbar
-                    open={localState}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                    onClose={() => { }}
-                    TransitionComponent={TransitionLeft}
-                    message="Transition"
-                    autoHideDuration={2000}
-                    key={"transition ? TransitionRight : ''"}
-                /> */}
-                {/* <Snackbar
-                    open={localState}
-                    onClose={() => { }}
-                    TransitionComponent={TransitionLeft}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                    autoHideDuration={6000}
-                >
-                    <Alert onClose={() => { }} severity="error" sx={{ width: '100%' }}>
-                    
-                    </Alert>
-                </Snackbar> */}
-            </>)}
+            <form onSubmit={handleSubmit(handleForm)}>
+                <div key={1}>
+                    <label>email</label>
+                    <input
+                        {...register('email')}
+                        type="text"
+                    />
+                    {errors.email && <span>{errors.email.message}</span>}
+                </div>
+                <div key={2}>
+                    <label>age</label>
+                    <input
+                        type="text"
+                        {...register('age')}
+                    />
+                    {errors.age && <span>{errors.age.message}</span>}
+                </div>
+                <div key={31}>
+                    <label>search</label>
+                    <input
+                        type="text"
+                        {...register('search')}
+                    />
+                    {errors.search && <span>{errors.search.message}</span>}
+                </div>
+
+                <button type='submit'>SUBMIT</button>
+            </form>
+
+            <br /><br /><br />
+
             <button onClick={despachar}>teste</button>
             <br /><br />
             <button onClick={handleDelete}>deletar</button>
             <br /><br />
             <button onClick={logout}>logout</button>
             <br /><br />
-            <button onClick={openMessageBar}>alert</button>
 
         </div>
     </>)

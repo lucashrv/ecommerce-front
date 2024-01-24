@@ -1,7 +1,8 @@
 import axios from "axios"
+import env from '../schemas/envSchema';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080/api'
+    baseURL: env.VITE_DATABASE_URL
 })
 
 axiosInstance.interceptors.request.use(
