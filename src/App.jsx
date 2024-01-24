@@ -4,6 +4,7 @@ import {
   Route,
   Navigate
 } from 'react-router-dom'
+import Navbar from './components/Navbar'
 
 // Public Routes Imports
 import SignUp from './views/SignUp'
@@ -18,10 +19,22 @@ function App() {
     return localStorage.getItem('token');
   };
 
-  const PrivateRoute = ({ element: Component, ...props }) => {
+  const PrivateRouteNav = ({ element: Component, ...props }) => {
     const getToken = authVerify()
 
-    return getToken ? <Component {...props} /> : <Navigate to="/login" />
+    return getToken
+      ? <>
+        <Navbar />
+        <Component {...props} />
+      </>
+      : <Navigate to="/login" />
+  }
+
+  const PublicRouteNav = ({ element: Component, ...props }) => {
+    return <>
+      <Navbar />
+      <Component {...props} />
+    </>
   }
 
   // Redirect connected users
@@ -36,8 +49,7 @@ function App() {
       <Router>
         <Routes>
 
-          {/* Public Routes */}
-          {/* <Route path="/signup" element={<SignUp />} /> */}
+          {/* Public Routes without Navbar */}
           <Route
             path="/signup"
             element={<RedirectConnected element={SignUp} />}
@@ -47,11 +59,19 @@ function App() {
             element={<RedirectConnected element={Login} />}
           />
 
-          {/* Private Routes */}
+          {/* Public Routes with Navbar */}
+          {/* <Route
+            path="/testes"
+            element={<PublicRouteNav element={Test} />}
+          /> */}
+
+          {/* Private Routes with Navbar */}
           <Route
             path="/test"
-            element={<PrivateRoute element={Test} />}
+            element={<PrivateRouteNav element={Test} />}
           />
+
+          {/* Private Routes with Navbar */}
 
         </Routes>
       </Router>
