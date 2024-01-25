@@ -1,6 +1,6 @@
 const colors = {
-    bgLight: '',
-    bgDark: '',
+    bgColor: '#fcfcfc',
+    navbar: '#b11010',
     font: '',
     black: '#000',
     black2: '#111',

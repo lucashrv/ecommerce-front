@@ -45,8 +45,8 @@ export default function LoginTemplate() {
     })
   }
 
-  const login = async (event) => {
-    event.preventDefault()
+  const login = async (e) => {
+    e.preventDefault()
 
     const token = await api.post('/user/login', data)
     localStorage.setItem('token', token?.auth?.token)

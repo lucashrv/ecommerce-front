@@ -1,0 +1,7 @@
+.scroll-container {
+    transition: 0.3s ease;
+}
+
+.scrolled {
+    height: 50px !important;
+}

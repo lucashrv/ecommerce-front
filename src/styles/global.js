@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import colors from "./colors";
 
 const GlobalStyle = createGlobalStyle`
     * {
@@ -10,6 +11,10 @@ const GlobalStyle = createGlobalStyle`
         font-size: 1rem;
         font-family: 'Open Sans', sans-serif;
         font-weight: 400;
+    }
+
+    body {
+        background-color: #fcfcfc;
     }
 `
 
