@@ -5,12 +5,14 @@ import colors from '../../styles/colors'
 export const Container = styled.nav`
     background-color: ${colors.navbar};
     width: 100%;
+    min-width: 640px;
     height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky;
     top: 0;
+    z-index: 1000;
 `
 
 export const DivRight = styled.div`
@@ -39,6 +41,10 @@ export const DivLogin = styled.div`
     margin-right: 20px;
     padding: 10px;
     cursor: pointer;
+
+    &:hover {
+        color: #f3f3f3
+    }
 `
 
 export const DivSearch = styled.div`
@@ -50,6 +56,22 @@ export const DivSearch = styled.div`
     min-width: 200px;
     max-width: 300px;
     margin: 0 30px;
+`
+
+export const CircleCart = styled.div`
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    font-size: 8px;
+    font-weight: 700;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 28px;
+    left: 28px;
+    z-index: 1;
 `
 
 export const Span = styled.span`
@@ -70,6 +92,18 @@ export const Span = styled.span`
 
     &:hover::before {
         width: 100%;
+    }
+`
+
+export const MenuButton = styled.div`
+    border: 1px solid white;
+    color: ${colors.white};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (min-width: 700px) {
+        display: none;
     }
 `
 

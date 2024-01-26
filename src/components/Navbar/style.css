@@ -5,3 +5,13 @@
 .scrolled {
     height: 50px !important;
 }
+
+.icon-cart {
+    color: #fff;
+    font-size: 1.6rem !important;
+    z-index: 1;
+}
+
+.icon-cart:hover {
+    color: #d3d3d3;
+}

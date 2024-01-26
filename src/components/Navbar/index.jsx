@@ -1,9 +1,11 @@
+import './style.css'
 import { useState, useEffect } from 'react'
+import { useForm } from 'react-hook-form';
 import IconButton from '@mui/material/IconButton';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import { Avatar } from '@mui/material';
-import InputSearch from '../InputSeach';
+import InputSearch from '../InputSearch';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
     DivRight,
@@ -11,16 +13,18 @@ import {
     TypographyLogo,
     Span,
     DivLogin,
-    DivSearch
+    DivSearch,
+    CircleCart,
+    MenuButton
 } from './styled';
-import './style.css'
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Navbar() {
     const user = JSON.parse(localStorage.getItem('user'))
 
-    const [scrolled, setScrolled] = useState(false);
+    const [searchValue, setSearchValue] = useState('')
+    const [scrolled, setScrolled] = useState(false)
 
     const handleScroll = () => {
         const isScrolled = window.scrollY > 0;
@@ -67,6 +71,11 @@ function Navbar() {
         };
     }
 
+    const handleSearchSubmit = (e) => {
+        e.preventDefault()
+        console.log(searchValue)
+    }
+
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
 
@@ -77,16 +86,24 @@ function Navbar() {
 
     return (
         <Container className={`scroll-container ${scrolled ? 'scrolled' : ''}`}>
-            <IconButton aria-label="menu">
-                <MenuIcon />
-            </IconButton>
+            <MenuButton>
+                <MenuIcon
+                    fontSize='large'
+                />
+            </MenuButton>
             <TypographyLogo
                 label={'Ecommerce'}
                 href='/login'
             />
 
             <DivSearch>
-            <InputSearch />
+
+                <InputSearch
+                    onSubmit={handleSearchSubmit}
+                    value={searchValue}
+                    // loading={true}
+                    onChange={e => setSearchValue(e.target.value)}
+                />
             </DivSearch>
             <DivRight>
                 <DivLogin onClick={() => { }}>
@@ -104,12 +121,9 @@ function Navbar() {
                 <IconButton onClick={() => { }} >
                     <ShoppingCartOutlinedIcon
                         fontSize='large'
-                        style={{
-                            color: '#fff',
-                            fontSize: '1.5rem',
-                            zIndex: '1'
-                        }}
+                        className='icon-cart'
                     />
+                    <CircleCart>999</CircleCart>
                 </IconButton>
             </DivRight>
         </Container>

@@ -30,7 +30,6 @@ const Test = () => {
         mutateAsync: mutateDelete
     } = api.mutateDelete(['get-products'])
 
-
     const userList = useSelector(selectUser.list)
     const message = useSelector(selectMessage.state)
 
@@ -98,14 +97,15 @@ const Test = () => {
     } = useForm({
         resolver: zodResolver(testSchema)
     })
-    console.log('asd')
-    console.log(errors);
+
     const handleForm = (data) => {
         console.log(data);
     }
 
     return (<>
         <div>
+
+            <br /><br /><br /><br />
 
             {userList &&
                 userList.map(item =>
