@@ -35,7 +35,7 @@ export default function MessageBar(props) {
     {(open || message.show) && (
       <Stack spacing={2} sx={{ width: '100%' }}>
         <Snackbar
-          open={open ?? message.show}
+          open={true}
           TransitionComponent={transitionLeft}
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
           autoHideDuration={4000}

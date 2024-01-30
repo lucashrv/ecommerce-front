@@ -52,7 +52,7 @@ const Test = () => {
         e.preventDefault()
 
         try {
-            const dest = await mutateDelete('/products/21')
+            const dest = await mutateDelete('/products/22')
             //
             if (message.show) {
                 dispatch(messageActions.hideMessage())
@@ -93,13 +93,17 @@ const Test = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { isSubmitting, errors }
     } = useForm({
         resolver: zodResolver(testSchema)
     })
 
     const handleForm = (data) => {
         console.log(data);
+    }
+
+    const updateEntityForm = (entity, value) => {
+        return dispatch(userActions.updateEntity({ [entity]: value }))
     }
 
     return (<>
@@ -118,8 +122,9 @@ const Test = () => {
                 <div key={1}>
                     <label>email</label>
                     <input
-                        {...register('email')}
                         type="text"
+                        { ...register('email') }
+                        onChange={(e) => updateEntityForm('email', e.target.value)}
                     />
                     {errors.email && <span>{errors.email.message}</span>}
                 </div>
@@ -127,7 +132,8 @@ const Test = () => {
                     <label>age</label>
                     <input
                         type="text"
-                        {...register('age')}
+                        { ...register('age') }
+                        onChange={(e) => updateEntityForm('age', e.target.value)}
                     />
                     {errors.age && <span>{errors.age.message}</span>}
                 </div>
@@ -135,7 +141,8 @@ const Test = () => {
                     <label>search</label>
                     <input
                         type="text"
-                        {...register('search')}
+                        { ...register('search') }
+                        onChange={(e) => updateEntityForm('search', e.target.value)}
                     />
                     {errors.search && <span>{errors.search.message}</span>}
                 </div>
@@ -147,7 +154,12 @@ const Test = () => {
 
             <button onClick={despachar}>teste</button>
             <br /><br />
-            <button onClick={handleDelete}>deletar</button>
+            <button
+                disabled={isSubmitting}
+                onClick={handleDelete}
+            >
+                deletar
+            </button>
             <br /><br />
             <button onClick={logout}>logout</button>
             <br /><br />

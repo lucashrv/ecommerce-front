@@ -12,7 +12,7 @@ import {
   ContainerSearch
 } from './styled';
 import './style.css'
-import colors from './../../styles/colors';
+import colors from './../../styles/colors.jsx';
 
 export default function InputSearch(props) {
   const {
@@ -41,7 +41,6 @@ export default function InputSearch(props) {
         type='text'
         value={value}
         onChange={onChange}
-        disabled={loading}
       />
       {!loading && <>
         <ButtonIcon onSubmit={onSubmit} type="submit">

@@ -1,12 +1,22 @@
 import './style.css'
 import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form';
-import IconButton from '@mui/material/IconButton';
+import { IconButton as MuiIconButton } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import { Avatar } from '@mui/material';
 import InputSearch from '../InputSearch';
 import MenuIcon from '@mui/icons-material/Menu';
+import Box from '@mui/joy/Box';
+import IconButton from '@mui/joy/IconButton';
+import Drawer from '@mui/joy/Drawer';
+import Input from '@mui/joy/Input';
+import List from '@mui/joy/List';
+import ListItemButton from '@mui/joy/ListItemButton';
+import Typography from '@mui/joy/Typography';
+import ModalClose from '@mui/joy/ModalClose';
+import Menu from '@mui/icons-material/Menu';
+import Search from '@mui/icons-material/Search';
 import {
     DivRight,
     Container,
@@ -25,6 +35,7 @@ function Navbar() {
 
     const [searchValue, setSearchValue] = useState('')
     const [scrolled, setScrolled] = useState(false)
+    const [openMenu, setOpenMenu] = useState(false);
 
     const handleScroll = () => {
         const isScrolled = window.scrollY > 0;
@@ -70,10 +81,11 @@ function Navbar() {
             children: `${initials}`,
         };
     }
-
+    const [loadings, setLoadings] = useState(false)
     const handleSearchSubmit = (e) => {
         e.preventDefault()
-        console.log(searchValue)
+
+        setLoadings(prev => !prev)
     }
 
     useEffect(() => {
@@ -85,48 +97,140 @@ function Navbar() {
     }, [])
 
     return (
-        <Container className={`scroll-container ${scrolled ? 'scrolled' : ''}`}>
-            <MenuButton>
-                <MenuIcon
-                    fontSize='large'
+        <>
+            <Container className={`scroll-container ${scrolled ? 'scrolled' : ''}`}>
+                <MenuButton
+                    onClick={() => setOpenMenu(true)}
+                >
+                    <MenuIcon
+                        fontSize='medium'
+                    />
+                </MenuButton>
+                <TypographyLogo
+                    label={'Ecommerce'}
+                    href='/login'
                 />
-            </MenuButton>
-            <TypographyLogo
-                label={'Ecommerce'}
-                href='/login'
-            />
 
-            <DivSearch>
+                <DivSearch>
 
-                <InputSearch
-                    onSubmit={handleSearchSubmit}
-                    value={searchValue}
-                    // loading={true}
-                    onChange={e => setSearchValue(e.target.value)}
-                />
-            </DivSearch>
-            <DivRight>
-                <DivLogin onClick={() => { }}>
-                    {/* <Avatar
+                    <InputSearch
+                        onSubmit={handleSearchSubmit}
+                        value={searchValue}
+                        loading={loadings}
+                        onChange={e => setSearchValue(e.target.value)}
+                    />
+                </DivSearch>
+                <DivRight>
+                    <DivLogin onClick={() => { }}>
+                        {/* <Avatar
                         src=''
                         {...stringAvatar(user?.name ?? '')}
                     >
                     </Avatar> */}
-                    <PersonIcon
-                        fontSize='small'
-                    />
-                    <Span>{'ENTRAR'}</Span>
-                </DivLogin>
+                        <PersonIcon
+                            fontSize='small'
+                        />
+                        <Span>{'ENTRAR'}</Span>
+                    </DivLogin>
 
-                <IconButton onClick={() => { }} >
-                    <ShoppingCartOutlinedIcon
-                        fontSize='large'
-                        className='icon-cart'
+                    <MuiIconButton onClick={() => { }} >
+                        <ShoppingCartOutlinedIcon
+                            fontSize='large'
+                            className='icon-cart'
+                        />
+                        <CircleCart>999</CircleCart>
+                    </MuiIconButton>
+                </DivRight>
+            </Container>
+
+            {/* Menu Mobile left */}
+            <>
+                <Drawer
+                    open={openMenu}
+                    onClose={() => setOpenMenu(false)}
+                    sx={{
+                        '--Drawer-transitionDuration': open ? '0.4s' : '0.2s',
+                        '--Drawer-transitionFunction': open
+                            ? 'cubic-bezier(0.79,0.14,0.15,0.86)'
+                            : 'cubic-bezier(0.77,0,0.18,1)',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 0,
+                            ml: '5px',
+                            mt: 1,
+                        }}
+                    >
+
+                        <ModalClose
+                            size='lg'
+                            id="close-icon"
+                            sx={{
+                                position: 'initial',
+                                '&:hover': {
+                                    backgroundColor: 'inherit',
+                                },
+                            }}
+                        />
+                    </Box>
+                    <Input
+                        size="sm"
+                        placeholder="Pesquisar produto"
+                        variant="plain"
+                        endDecorator={<Search />}
+                        slotProps={{
+                            input: {
+                                'aria-label': 'Pesquisar produto',
+                            },
+                        }}
+                        sx={{
+                            m: 3,
+                            borderRadius: 0,
+                            borderBottom: '2px solid',
+                            borderColor: 'neutral.outlinedBorder',
+                            '&:hover': {
+                                borderColor: 'neutral.outlinedHoverBorder',
+                            },
+                            '&::before': {
+                                border: '1.1px solid #111111d2',
+                                transform: 'scaleX(0)',
+                                left: 0,
+                                right: 0,
+                                bottom: '-2px',
+                                top: 'unset',
+                                transition: 'transform .3s cubic-bezier(0.1,0.9,0.2,1)',
+                                borderRadius: 0,
+                            },
+                            '&:focus-within::before': {
+                                transform: 'scaleX(1)',
+                            },
+                        }}
                     />
-                    <CircleCart>999</CircleCart>
-                </IconButton>
-            </DivRight>
-        </Container>
+                    <List
+                        size="sm"
+                        component="nav"
+                        sx={{
+                            flex: 'none',
+                            fontSize: 'sm',
+                            '& > div': {
+                                justifyContent: 'left',
+                                paddingLeft: '30px',
+                            },
+                        }}
+                    >
+                        <ListItemButton sx={{ fontWeight: 'lg' }}>
+                            Home
+                        </ListItemButton>
+                        <ListItemButton>About</ListItemButton>
+                        <ListItemButton>Studio</ListItemButton>
+                        <ListItemButton>Contact</ListItemButton>
+                    </List>
+                </Drawer>
+            </>
+        </>
     );
 }
 export default Navbar;

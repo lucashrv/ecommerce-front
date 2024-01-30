@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Typography from '@mui/material/Typography';
-import colors from '../../styles/colors'
+import colors from '../../styles/colors.jsx'
 
 export const Container = styled.nav`
     background-color: ${colors.navbar};
@@ -96,11 +96,12 @@ export const Span = styled.span`
 `
 
 export const MenuButton = styled.div`
-    border: 1px solid white;
     color: ${colors.white};
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    margin-left: 10px;
 
     @media (min-width: 700px) {
         display: none;

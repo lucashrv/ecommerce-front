@@ -4,12 +4,13 @@ import actions from "../utils/defaultActions"
 const initialState = {
     list: [],
     entity: {},
+    entityErrors: null,
     loading: false,
-    error: null
+    errors: null
 }
 
 export const slice = createSlice({
-    name: 'user',
+    name: 'users',
     initialState,
     reducers: {
         ...actions
@@ -17,9 +18,12 @@ export const slice = createSlice({
 })
 
 export const selectUser = {
-    state: state => state.user,
-    list: state => state.user.list,
-    entity: state => state.user.entity
+    state: state => state.users,
+    list: state => state.users.list,
+    entity: state => state.users.entity,
+    entityErrors: state => state.users.entityErrors,
+    loading: state => state.users.loading,
+    errors: state => state.users.errors
 }
 
 export const userActions = slice.actions

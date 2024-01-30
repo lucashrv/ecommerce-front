@@ -5,7 +5,7 @@ import messageReducer from './slices/messageSlice'
 
 const store = configureStore({
     reducer: {
-        user: userReducer,
+        users: userReducer,
         message: messageReducer,
     },
 })

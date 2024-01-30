@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 import store from './redux/store.js'
 
 // Global Style
-import GlobalStyle from './styles/global.js'
+import GlobalStyle from './styles/global.jsx'
 import MessageBar from './components/MessageBar/index.jsx'
 
 const client = new QueryClient()
