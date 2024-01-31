@@ -9,6 +9,7 @@ import Navbar from './components/Navbar'
 // Public Routes Imports
 import SignUp from './views/SignUp'
 import Login from './views/Login'
+import Home from './views/Home'
 
 // Private Routes Imports
 import Test from './views/Test'
@@ -60,18 +61,17 @@ function App() {
           />
 
           {/* Public Routes with Navbar */}
-          {/* <Route
-            path="/testes"
-            element={<PublicRouteNav element={Test} />}
-          /> */}
+          <Route
+            path="/"
+            element={<PublicRouteNav element={Home} />}
+          />
+          
 
           {/* Private Routes with Navbar */}
           <Route
             path="/test"
             element={<PrivateRouteNav element={Test} />}
           />
-
-          {/* Private Routes with Navbar */}
 
         </Routes>
       </Router>

@@ -17,6 +17,7 @@ import Typography from '@mui/joy/Typography';
 import ModalClose from '@mui/joy/ModalClose';
 import Menu from '@mui/icons-material/Menu';
 import Search from '@mui/icons-material/Search';
+import Badge from '@mui/joy/Badge';
 import {
     DivRight,
     Container,
@@ -24,8 +25,10 @@ import {
     Span,
     DivLogin,
     DivSearch,
-    CircleCart,
-    MenuButton
+    BadgeCart,
+    MenuButton,
+    WelcomeLabel,
+    SignInUpLabel
 } from './styled';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -36,6 +39,7 @@ function Navbar() {
     const [searchValue, setSearchValue] = useState('')
     const [scrolled, setScrolled] = useState(false)
     const [openMenu, setOpenMenu] = useState(false);
+    const [openCarts, setOpenCarts] = useState(false);
 
     const handleScroll = () => {
         const isScrolled = window.scrollY > 0;
@@ -88,6 +92,18 @@ function Navbar() {
         setLoadings(prev => !prev)
     }
 
+    const badgeMaxCount = (lengthCart) => {
+        let count = lengthCart
+
+        if (+lengthCart > 999) {
+            count = '999+'
+        } else if (+lengthCart < 0) {
+            count = 0
+        }
+
+        return count
+    }
+
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
 
@@ -133,17 +149,18 @@ function Navbar() {
                         <Span>{'ENTRAR'}</Span>
                     </DivLogin>
 
-                    <MuiIconButton onClick={() => { }} >
+                    <MuiIconButton onClick={() => setOpenCarts(true)} >
                         <ShoppingCartOutlinedIcon
                             fontSize='large'
                             className='icon-cart'
                         />
-                        <CircleCart>999</CircleCart>
+                        <BadgeCart>{badgeMaxCount(0)}</BadgeCart>
                     </MuiIconButton>
+
                 </DivRight>
             </Container>
 
-            {/* Menu Mobile left */}
+            {/* Menu Mobile Drawer left */}
             <>
                 <Drawer
                     open={openMenu}
@@ -176,6 +193,20 @@ function Navbar() {
                             }}
                         />
                     </Box>
+
+                    <WelcomeLabel>Olá</WelcomeLabel>
+
+                    <SignInUpLabel
+                        href='/login'
+                    >
+                        Entrar
+                    </SignInUpLabel>
+                    <SignInUpLabel
+                        href='/signup'
+                    >
+                        Cadastre-se
+                    </SignInUpLabel>
+
                     <Input
                         size="sm"
                         placeholder="Pesquisar produto"
@@ -228,6 +259,44 @@ function Navbar() {
                         <ListItemButton>Studio</ListItemButton>
                         <ListItemButton>Contact</ListItemButton>
                     </List>
+                </Drawer>
+            </>
+
+            {/* Carts Drawer Right */}
+            <>
+                <Drawer
+                    anchor="right"
+                    open={openCarts}
+                    onClose={() => setOpenCarts(false)}
+                    sx={{
+                        '--Drawer-transitionDuration': open ? '0.4s' : '0.2s',
+                        '--Drawer-transitionFunction': open
+                            ? 'cubic-bezier(0.79,0.14,0.15,0.86)'
+                            : 'cubic-bezier(0.77,0,0.18,1)',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'flex-end',
+                            gap: 0,
+                            mr: '20px',
+                            mt: 1,
+                        }}
+                    >
+
+                        <ModalClose
+                            size='lg'
+                            id="close-icon"
+                            sx={{
+                                position: 'initial',
+                                '&:hover': {
+                                    backgroundColor: 'inherit',
+                                },
+                            }}
+                        />
+                    </Box>
                 </Drawer>
             </>
         </>

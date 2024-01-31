@@ -58,14 +58,14 @@ export const DivSearch = styled.div`
     margin: 0 30px;
 `
 
-export const CircleCart = styled.div`
-    width: 15px;
-    height: 15px;
+export const BadgeCart = styled.div`
+    width: 18px;
+    height: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #fff;
-    font-size: 8px;
+    font-size: 7px;
     font-weight: 700;
     border-radius: 50%;
     position: absolute;
@@ -108,6 +108,31 @@ export const MenuButton = styled.div`
     }
 `
 
+export const WelcomeLabel = styled.h1`
+    margin-left: 30px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    font-weight: 500;
+`
+
+export const SignInUpLabel = styled.a`
+    margin-left: 30px;
+    margin-top: 5px;
+    font-size: .7rem;
+    cursor: pointer;
+    width: fit-content;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &:visited {
+        color: inherit;
+    }
+`
+
 export const TypographyLogo = ({ label, href }) => {
     return <>
         <DivLogo>
@@ -120,7 +145,7 @@ export const TypographyLogo = ({ label, href }) => {
                     fontFamily: 'sans-serif',
                     fontWeight: 500,
                     letterSpacing: '.1rem',
-                    color: 'inherit',
+                    color: 'white',
                     textDecoration: 'none',
                     fontSize: '25px'
                 }}
