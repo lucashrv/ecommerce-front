@@ -8,6 +8,11 @@ export default function Home() {
         <>
             <Carousel />
             <h1>HOME</h1>
+            <h1>HOME</h1>
+            <h1>HOME</h1>
+            <h1>HOME</h1>
+            <h1>HOME</h1>
+            <h1>HOME</h1>
         </>
     )
 }

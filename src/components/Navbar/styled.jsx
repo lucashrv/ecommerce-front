@@ -13,6 +13,7 @@ export const Container = styled.nav`
     position: sticky;
     top: 0;
     z-index: 1000;
+    border-bottom: 1.5px solid ${colors.navbarBorder};
 `
 
 export const DivRight = styled.div`

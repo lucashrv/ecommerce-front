@@ -1,11 +1,20 @@
 import { useState, useEffect } from "react";
-import CarouselItem from "./CarouselItem"
-import { CarouselContainer } from './styled';
+import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
+import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import {
+    CarouselContainer,
+    CarouselContent,
+    ButtonsDiv,
+    CarouselItem,
+    ButtonSlider,
+    ArrowsDiv,
+    ArrowsButton
+} from './styled';
 
 export default function Carousel() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const items = ['items', 'asdasd']
+    const items = ['https://lojamaxtitanium.vtexassets.com/assets/vtex.file-manager-graphql/images/2d0c3636-a6d9-47d6-8c37-a0e30cd05a74___13d703b703aa12a5a7b7d6e6b6c0cd0f.jpg', 'https://lojamaxtitanium.vtexassets.com/assets/vtex.file-manager-graphql/images/2d0c3636-a6d9-47d6-8c37-a0e30cd05a74___13d703b703aa12a5a7b7d6e6b6c0cd0f.jpg', 'https://lojamaxtitanium.vtexassets.com/assets/vtex.file-manager-graphql/images/2d0c3636-a6d9-47d6-8c37-a0e30cd05a74___13d703b703aa12a5a7b7d6e6b6c0cd0f.jpg']
 
     const buttons = {
         goTo: (index) => {
@@ -13,12 +22,12 @@ export default function Carousel() {
         },
         generate: (array) => (
             array.map((item, index) => (
-                <button
+                <ButtonSlider
                     Key={index}
+                    selected={index === currentIndex ? true : false}
                     onClick={() => buttons.goTo(index)}
                 >
-                    ---
-                </button>
+                </ButtonSlider>
             ))
         ),
         prevItem: (array) => {
@@ -32,38 +41,40 @@ export default function Carousel() {
     useEffect(() => {
         const carouselTimer = setInterval(() => {
             buttons.nextItem(items)
-        }, 4000);
+        }, 6000);
 
         return () => clearInterval(carouselTimer)
 
     }, [currentIndex])
 
-    console.log('renders');
     return (
         <>
-            {/* <h1>Carousel</h1>
-            <CarouselItem>
-            </CarouselItem> */}
             <CarouselContainer>
-                <div className="carousel-content">
+                <CarouselContent>
                     {items.map((item, index) => (
-                        // <div key={index} className={`carousel-item ${index === currentIndex ? 'active' : ''}`}>
-                        //     {item}
-                        // </div>
                         index === currentIndex && (
-                            <>{item}</>
+                            <CarouselItem
+                                Key={index}
+                                src={item}
+                                alt={'carousel-item-' + index}
+                            />
                         )
                     ))}
-                </div>
-                <div>
+                </CarouselContent>
 
-                </div>
-                <div>
+                <ArrowsDiv>
+                    <ArrowsButton onClick={() => buttons.prevItem(items)}>
+                        <ArrowBackIosRoundedIcon fontSize="small" />
+                    </ArrowsButton>
+                    <ArrowsButton onClick={() => buttons.nextItem(items)}>
+                        <ArrowForwardIosRoundedIcon fontSize="small" />
+                    </ArrowsButton>
+                </ArrowsDiv>
+
+                <ButtonsDiv>
                     {buttons.generate(items)}
+                </ButtonsDiv>
 
-                </div>
-                <button onClick={() => buttons.prevItem(items)}>Anterior</button>
-                <button onClick={() => buttons.nextItem(items)}>Próximo</button>
             </CarouselContainer>
         </>
     )
