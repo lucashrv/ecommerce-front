@@ -1,52 +1,91 @@
-import * as React from 'react'
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux'
-import { userActions, selectUser } from '../../redux/slices/userSlice'
-import { messageActions } from './../../redux/slices/messageSlice';
-import { selectMessage } from './../../redux/slices/messageSlice';
-import useApi from '../../hooks/useReactQuery'
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import useApi from '../../hooks/useReactQuery';
 import testSchema from '../../schemas/testSchema';
+// import { selectUser, userActions } from '../../store/users/userSlice';
+import { productsActions } from '../../store/products/productsSlice';
+import productsApi from '../../store/products/productsSliceApi';
+import { messageActions, selectMessage } from './../../store/message/messageSlice';
 
 const Test = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const api = useApi()
 
-    const {
-        data,
-        isLoading,
-        error
-    } = api.query('/products', ['get-products'])
+    // const {
+    //     data,
+    //     isLoading,
+    //     error
+    // } = api.query('/products', ['get-products'])
 
-    const {
-        mutateAsync: mutatePost,
-        isSuccess
-    } = api.mutatePost('/products', ['get-products'])
+    // const {
+    //     mutateAsync: mutatePost,
+    //     // isSuccess
+    // } = api.mutatePost('/products', ['get-products'])
 
-    const {
-        mutateAsync: mutateDelete
-    } = api.mutateDelete(['get-products'])
+    // const {
+    //     mutateAsync: mutateDelete
+    // } = api.mutateDelete(['get-products'])
 
-    const userList = useSelector(selectUser.list)
+    const { data, error, isLoading } = productsApi.useGetProductsQuery()
+    const [
+        createProduct,
+        {
+            error: errorCreate,
+            isError: isErrorCreate,
+            isLoading: loadingCreate,
+            isSuccess
+        }
+    ] = productsApi.useCreateProductMutation()
+
+    // const products = useSelector(selectProducts.state.entity)
     const message = useSelector(selectMessage.state)
 
+
+    // useEffect(() => {
+    //     isSuccess && dispatch(messageActions.showMessage({
+    //         label: 'Produto criado',
+    //         variant: 'success'
+    //     }))
+    //     const errorBody = errorCreate.data.errors.body
+    //     isErrorCreate && dispatch(messageActions.showMessage({
+    //         label: Object.keys(errorBody)[0].toString() + errorBody?.price,
+    //         variant: 'error'
+    //     }))
+    // }, [isSuccess, isErrorCreate])
     const despachar = async (e) => {
         e.preventDefault()
+
         const data = {
-            name: '1',
-            description: '1',
-            price: 113.99,
-            amount: 12,
+            name: 'RTK Query',
+            description: 'Teste RTK Query',
+            price: 12,
+            amount: '',
             image: 'image',
             category_id: 1
         }
 
-        const create = await mutatePost(data)
-        dispatch(userActions.updateEntity(create))
+        try {
+            const d = await createProduct(data)
+
+            console.log(d);
+            console.log(errorCreate);
+            console.log(isErrorCreate);
+            console.log(loadingCreate);
+            console.log(isSuccess);
+        } catch (error) {
+            console.log(error);
+        }
+
     }
+
+
+    // isErrorCreate && dispatch(messageActions.showMessage({
+    //     label: errorCreate,
+    //     variant: 'error'
+    // }))
 
     const handleDelete = async (e) => {
         e.preventDefault()
@@ -63,8 +102,8 @@ const Test = () => {
                 }))
             }
         } catch (err) {
-            const error = err.response.data.error
-            dispatch(userActions.updateState({ error }))
+            const errors = err.response.data.error
+            // dispatch(userActions.updateState({ errors }))
             //
             if (!message.show) {
                 dispatch(messageActions.showMessage({
@@ -81,14 +120,14 @@ const Test = () => {
         navigate("/login")
     }
 
-    useEffect(() => {
-        data &&
-            dispatch(userActions.updateState({
-                list: [...data],
-                loading: isLoading,
-                error
-            }))
-    }, [data, isLoading, error, dispatch])
+    // useEffect(() => {
+    //     data &&
+    //         dispatch(userActions.updateState({
+    //             list: [...data],
+    //             loading: isLoading,
+    //             errors: error
+    //         }))
+    // }, [data, isLoading, error, dispatch])
 
     const {
         register,
@@ -102,8 +141,8 @@ const Test = () => {
         console.log(data);
     }
 
-    const updateEntityForm = (entity, value) => {
-        return dispatch(userActions.updateEntity({ [entity]: value }))
+    const updateEntityState = (entity, value) => {
+        return dispatch(productsActions.updateEntity({ [entity]: value }))
     }
 
     return (<>
@@ -111,8 +150,8 @@ const Test = () => {
 
             <br /><br /><br /><br />
 
-            {userList &&
-                userList.map(item =>
+            {data &&
+                data.map(item =>
                     (<p key={item.id}>{item.name}</p>)
                 )
             }
@@ -123,8 +162,8 @@ const Test = () => {
                     <label>email</label>
                     <input
                         type="text"
-                        { ...register('email') }
-                        onChange={(e) => updateEntityForm('email', e.target.value)}
+                        {...register('email')}
+                        onChange={(e) => updateEntityState('email', e.target.value)}
                     />
                     {errors.email && <span>{errors.email.message}</span>}
                 </div>
@@ -132,8 +171,8 @@ const Test = () => {
                     <label>age</label>
                     <input
                         type="text"
-                        { ...register('age') }
-                        onChange={(e) => updateEntityForm('age', e.target.value)}
+                        {...register('age')}
+                        onChange={(e) => updateEntityState('age', e.target.value)}
                     />
                     {errors.age && <span>{errors.age.message}</span>}
                 </div>
@@ -141,8 +180,8 @@ const Test = () => {
                     <label>search</label>
                     <input
                         type="text"
-                        { ...register('search') }
-                        onChange={(e) => updateEntityForm('search', e.target.value)}
+                        {...register('search')}
+                        onChange={(e) => updateEntityState('search', e.target.value)}
                     />
                     {errors.search && <span>{errors.search.message}</span>}
                 </div>

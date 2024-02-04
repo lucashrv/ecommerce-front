@@ -1,20 +1,24 @@
-import { useState, useEffect } from "react";
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import { useEffect, useState } from 'react';
 import {
+    ArrowsButton,
+    ArrowsDiv,
+    ButtonSlider,
+    ButtonsDiv,
     CarouselContainer,
     CarouselContent,
-    ButtonsDiv,
-    CarouselItem,
-    ButtonSlider,
-    ArrowsDiv,
-    ArrowsButton
+    CarouselItem
 } from './styled';
 
 export default function Carousel() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const items = ['https://lojamaxtitanium.vtexassets.com/assets/vtex.file-manager-graphql/images/2d0c3636-a6d9-47d6-8c37-a0e30cd05a74___13d703b703aa12a5a7b7d6e6b6c0cd0f.jpg', 'https://lojamaxtitanium.vtexassets.com/assets/vtex.file-manager-graphql/images/2d0c3636-a6d9-47d6-8c37-a0e30cd05a74___13d703b703aa12a5a7b7d6e6b6c0cd0f.jpg', 'https://lojamaxtitanium.vtexassets.com/assets/vtex.file-manager-graphql/images/2d0c3636-a6d9-47d6-8c37-a0e30cd05a74___13d703b703aa12a5a7b7d6e6b6c0cd0f.jpg']
+    const items = [
+        'https://lojamaxtitanium.vtexassets.com/assets/vtex.file-manager-graphql/images/2d0c3636-a6d9-47d6-8c37-a0e30cd05a74___13d703b703aa12a5a7b7d6e6b6c0cd0f.jpg',
+        'https://lojamaxtitanium.vtexassets.com/assets/vtex.file-manager-graphql/images/ed4763b0-b669-4cb3-880a-d6576d61477b___543390e13465efb13be7d9ba51d7df09.png',
+        'https://lojamaxtitanium.vtexassets.com/assets/vtex.file-manager-graphql/images/e65b8559-444a-44e3-bca9-c01733f0bf53___b4561d4b46d81c14e9f071fa81c96373.png'
+    ]
 
     const buttons = {
         goTo: (index) => {

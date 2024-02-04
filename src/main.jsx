@@ -1,16 +1,15 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 // Redux
 import { Provider } from 'react-redux'
-import store from './redux/store.js'
+import store from './store/store'
 
 // Global Style
-import GlobalStyle from './styles/global.jsx'
 import MessageBar from './components/MessageBar/index.jsx'
+import GlobalStyle from './styles/global.jsx'
 
 const client = new QueryClient()
 
