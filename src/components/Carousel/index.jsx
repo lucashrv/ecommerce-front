@@ -27,7 +27,7 @@ export default function Carousel() {
         generate: (array) => (
             array.map((item, index) => (
                 <ButtonSlider
-                    Key={index}
+                    key={index}
                     selected={index === currentIndex ? true : false}
                     onClick={() => buttons.goTo(index)}
                 >
@@ -58,7 +58,7 @@ export default function Carousel() {
                     {items.map((item, index) => (
                         index === currentIndex && (
                             <CarouselItem
-                                Key={index}
+                                key={index}
                                 src={item}
                                 alt={'carousel-item-' + index}
                             />
