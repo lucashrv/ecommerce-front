@@ -8,19 +8,24 @@ export const CarouselContainer = styled.section`
     display: flex;
     align-items: center;
     justify-content: center;
+    
 `
 
 export const CarouselContent = styled.div`
     position: relative;
-    width: 100%;
     height: auto;
     max-width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     width: 1100px;
     overflow: hidden;
-    border: 1px solid red;
+    border: 1px solid;
+`
+
+export const CarouselSlider = styled.div`
+display: flex;
+align-items: center;
+justify-content: space-between;
+border: 1px solid red;
+position: relative;
 `
 
 export const ArrowsDiv = styled.div`

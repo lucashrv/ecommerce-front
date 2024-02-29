@@ -1,15 +1,17 @@
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import { useState } from 'react';
 import ProductCard from '../ProductCard';
 import {
     ArrowsButton,
     ArrowsDiv,
     CarouselContainer,
-    CarouselContent
+    CarouselContent,
+    CarouselSlider
 } from './styled';
 
 export default function Carousel() {
-    // const [currentIndex, setCurrentIndex] = useState(0);
+    const [positionSlider, setPositionSlider] = useState(0);
 
     const items = [
         {
@@ -36,15 +38,22 @@ export default function Carousel() {
             name: 'name4',
             image: 'image4',
             price: 'price4'
+        },
+        {
+            name: 'name4',
+            image: 'image4',
+            price: 'price4'
         }
     ]
 
-    const buttons = {
-        prevItem: (array) => {
-            setCurrentIndex(prev => (prev - 1 + array.length) % array.length)
+    const slider = {
+        width: 220,
+        size: items.length,
+        prevItem: () => {
+            setPositionSlider(prev => prev - slider.width)
         },
-        nextItem: (array) => {
-            setCurrentIndex(prev => (prev + 1) % array.length)
+        nextItem: () => {
+            setPositionSlider(prev => prev + slider.width)
         }
     }
 
@@ -52,16 +61,18 @@ export default function Carousel() {
         <>
             <CarouselContainer>
                 <CarouselContent>
-                    {items.map((item, index) => (
-                        <ProductCard key={index} />
-                    ))}
+                    <CarouselSlider style={{ right: positionSlider }}>
+                        {items.map((item, index) => (
+                            <ProductCard key={index} />
+                        ))}
+                    </CarouselSlider>
                 </CarouselContent>
 
                 <ArrowsDiv>
-                    <ArrowsButton onClick={() => buttons.prevItem(items)}>
+                    <ArrowsButton onClick={slider.prevItem}>
                         <ArrowBackIosRoundedIcon fontSize="medium" />
                     </ArrowsButton>
-                    <ArrowsButton onClick={() => buttons.nextItem(items)}>
+                    <ArrowsButton onClick={slider.nextItem}>
                         <ArrowForwardIosRoundedIcon fontSize="medium" />
                     </ArrowsButton>
                 </ArrowsDiv>

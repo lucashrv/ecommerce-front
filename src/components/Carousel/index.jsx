@@ -43,11 +43,11 @@ export default function Carousel() {
     }
 
     useEffect(() => {
-        const carouselTimer = setInterval(() => {
+        const carouselTimer = setTimeout(() => {
             buttons.nextItem(items)
         }, 6000);
 
-        return () => clearInterval(carouselTimer)
+        return () => clearTimeout(carouselTimer)
 
     }, [currentIndex])
 
