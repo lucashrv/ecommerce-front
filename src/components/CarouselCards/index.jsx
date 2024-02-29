@@ -12,6 +12,7 @@ import {
 
 export default function Carousel() {
     const [positionSlider, setPositionSlider] = useState(0);
+    const [countIndex, setCountIndex] = useState(0);
 
     const items = [
         {
@@ -48,15 +49,23 @@ export default function Carousel() {
 
     const slider = {
         width: 220,
-        size: items.length,
+        countSlides: items.length - 5, // total - visible items
         prevItem: () => {
-            setPositionSlider(prev => prev - slider.width)
+            if (countIndex === 0) return
+            else {
+                setCountIndex(prev => prev - 1)
+                setPositionSlider(prev => prev - slider.width)
+            }
         },
         nextItem: () => {
-            setPositionSlider(prev => prev + slider.width)
+            if (countIndex === slider.countSlides) return
+            else {
+                setCountIndex(prev => prev + 1)
+                setPositionSlider(prev => prev + slider.width)
+            }
         }
     }
-
+    console.log(countIndex);
     return (
         <>
             <CarouselContainer>
