@@ -1,18 +1,19 @@
 import {
-  BrowserRouter as Router,
-  Routes,
+  Navigate,
   Route,
-  Navigate
+  BrowserRouter as Router,
+  Routes
 } from 'react-router-dom'
 import Navbar from './components/Navbar'
 
 // Public Routes Imports
-import SignUp from './views/SignUp'
-import Login from './views/Login'
 import Home from './views/Home'
+import Login from './views/Login'
+import SignUp from './views/SignUp'
 
 // Private Routes Imports
 import Test from './views/Test'
+import Dashboard from './views/dashboard'
 
 function App() {
 
@@ -38,6 +39,13 @@ function App() {
     </>
   }
 
+  // Public Route without Navbar
+  const PublicRoute = ({ element: Component, ...props }) => {
+    return <>
+      <Component {...props} />
+    </>
+  }
+
   // Redirect connected users
   const RedirectConnected = ({ element: Component, ...props }) => {
     const getToken = authVerify()
@@ -59,13 +67,17 @@ function App() {
             path="/login"
             element={<RedirectConnected element={Login} />}
           />
+          <Route
+            path="/dashboard"
+            element={<PublicRoute element={Dashboard} />}
+          />
 
           {/* Public Routes with Navbar */}
           <Route
             path="/"
             element={<PublicRouteNav element={Home} />}
           />
-          
+
 
           {/* Private Routes with Navbar */}
           <Route
