@@ -6,14 +6,18 @@ import {
 } from 'react-router-dom'
 import Navbar from './components/Navbar'
 
-// Public Routes Imports
+// Public Routes
 import Home from './views/Home'
 import Login from './views/Login'
 import SignUp from './views/SignUp'
 
-// Private Routes Imports
+// Private Routes
 import Test from './views/Test'
+
+// Dashboard Routes
 import Dashboard from './views/dashboard'
+import Orders from './views/dashboard/Pages/Orders'
+import Users from './views/dashboard/Pages/Users'
 
 function App() {
 
@@ -40,11 +44,11 @@ function App() {
   }
 
   // Public Route without Navbar
-  const PublicRoute = ({ element: Component, ...props }) => {
-    return <>
-      <Component {...props} />
-    </>
-  }
+  // const PublicRoute = ({ element: Component, ...props }) => {
+  //   return <>
+  //     <Component {...props} />
+  //   </>
+  // }
 
   // Redirect connected users
   const RedirectConnected = ({ element: Component, ...props }) => {
@@ -67,10 +71,6 @@ function App() {
             path="/login"
             element={<RedirectConnected element={Login} />}
           />
-          <Route
-            path="/dashboard"
-            element={<PublicRoute element={Dashboard} />}
-          />
 
           {/* Public Routes with Navbar */}
           <Route
@@ -78,11 +78,20 @@ function App() {
             element={<PublicRouteNav element={Home} />}
           />
 
-
           {/* Private Routes with Navbar */}
           <Route
             path="/test"
             element={<PrivateRouteNav element={Test} />}
+          />
+
+          {/* Dashboard Admin Routes */}
+          <Route
+            path="/dashboard/users"
+            element={<Dashboard element={Users} />}
+          />
+          <Route
+            path="/dashboard/orders"
+            element={<Dashboard element={Orders} />}
           />
 
         </Routes>

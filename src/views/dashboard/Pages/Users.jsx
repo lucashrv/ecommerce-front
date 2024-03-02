@@ -1,9 +1,9 @@
 import { Paper } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Deposits from '../../../components/Dashboard/Deposits';
-import OrdersList from '../../../components/Dashboard/OrdersList';
+import Title from '../../../components/Dashboard/Title';
 
-export default function Orders() {
+export default function Users() {
     return <>
         <Grid container spacing={3}>
             <Grid item xs={12} md={8} lg={9}>
@@ -15,6 +15,7 @@ export default function Orders() {
                         height: 240,
                     }}
                 >
+                    <Title>Usuários</Title>
                 </Paper>
             </Grid>
             {/* Recent Deposits */}
@@ -28,12 +29,6 @@ export default function Orders() {
                     }}
                 >
                     <Deposits />
-                </Paper>
-            </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                    <OrdersList />
                 </Paper>
             </Grid>
         </Grid>

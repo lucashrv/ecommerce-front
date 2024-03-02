@@ -9,14 +9,37 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 export const mainListItems = (
     <React.Fragment>
+        <Link to="/dashboard/users">
+            <ListItemButton>
+                <ListItemIcon>
+                    <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText primary="Usuários" />
+            </ListItemButton>
+        </Link>
+        <Link to="/dashboard/orders">
+            <ListItemButton>
+                <ListItemIcon>
+                    <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Orders" />
+            </ListItemButton>
+        </Link>
         <ListItemButton>
             <ListItemIcon>
-                <DashboardIcon />
+                <ShoppingCartIcon />
             </ListItemIcon>
-            <ListItemText primary="Dashboard" />
+            <ListItemText primary="Orders" />
+        </ListItemButton>
+        <ListItemButton>
+            <ListItemIcon>
+                <ShoppingCartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Orders" />
         </ListItemButton>
         <ListItemButton>
             <ListItemIcon>
