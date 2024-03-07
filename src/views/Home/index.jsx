@@ -1,9 +1,12 @@
+import { useNavigate } from "react-router-dom"
 import Carousel from "../../components/Carousel"
 import CarouselCards from "../../components/CarouselCards"
 
 export default function Home() {
-
-
+    const navigate = useNavigate()
+    const goto = () => {
+        navigate('/test')
+    }
 
     return (
         <>
@@ -12,7 +15,7 @@ export default function Home() {
             <CarouselCards />
             <h1>HOME</h1>
             <h1>HOME</h1>
-            <h1>HOME</h1>
+            <button onClick={goto}>GOTO TEST</button>
             <h1>HOME</h1>
             <h1>HOME</h1>
             <h1>HOME</h1>

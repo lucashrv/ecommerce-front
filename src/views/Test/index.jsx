@@ -29,7 +29,11 @@ const Test = () => {
     //     mutateAsync: mutateDelete
     // } = api.mutateDelete(['get-products'])
 
+    // const { mutateAsync: userLogout } = api.mutatePost('/user/logout', ['logout'])
+
+    // const { data: isAuthenticated } = userApi.useIsAuthenticatedQuery()
     const { data, error, isLoading } = productsApi.useGetProductsQuery()
+
     const [
         createProduct,
         {
@@ -115,9 +119,9 @@ const Test = () => {
     }
 
     const logout = () => {
-        localStorage.clear()
-
-        navigate("/login")
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        navigate('/login')
     }
 
     // useEffect(() => {

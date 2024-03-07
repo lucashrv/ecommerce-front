@@ -1,18 +1,17 @@
-import * as React from 'react';
-import { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
-import useAxios from '../../hooks/useAxios';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useApi from '../../hooks/useReactQuery';
 
 function Copyright(props) {
   return (
@@ -33,7 +32,7 @@ export default function LoginTemplate() {
 
   const navigate = useNavigate()
 
-  const { api, loading, error } = useAxios()
+  const api = useApi()
 
   const [data, setData] = useState({})
 
@@ -45,17 +44,25 @@ export default function LoginTemplate() {
     })
   }
 
+  const {
+    mutateAsync: mutateLogin,
+    loading
+  } = api.mutatePost('/user/login', ['login'])
+
   const login = async (e) => {
     e.preventDefault()
 
-    const token = await api.post('/user/login', data)
-    localStorage.setItem('token', token?.auth?.token)
-    localStorage.setItem('user', JSON.stringify({
-      name: token?.auth?.name,
-      role: token?.auth?.role
-    }))
+    const token = await mutateLogin(data)
+    console.log(token);
+    if (token.auth.token) {
+      localStorage.setItem('token', token.auth.token)
+      localStorage.setItem('user', JSON.stringify({
+        name: token?.auth?.name,
+      }))
 
-    navigate('/test')
+      navigate('/test')
+    }
+
   };
 
   return (

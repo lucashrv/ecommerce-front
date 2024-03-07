@@ -26,15 +26,16 @@ function App() {
   };
 
   const PrivateRouteNav = ({ element: Component, ...props }) => {
-    const getToken = authVerify()
+    const isAuthenticated = authVerify()
 
-    return getToken
+    return isAuthenticated
       ? <>
         <Navbar />
         <Component {...props} />
       </>
       : <Navigate to="/login" />
   }
+
 
   const PublicRouteNav = ({ element: Component, ...props }) => {
     return <>
@@ -52,9 +53,11 @@ function App() {
 
   // Redirect connected users
   const RedirectConnected = ({ element: Component, ...props }) => {
-    const getToken = authVerify()
+    const isAuthenticated = authVerify()
 
-    return getToken ? <Navigate to="/test" /> : <Component {...props} />
+    return isAuthenticated
+      ? <Navigate to="/test" />
+      : <Component {...props} />
   }
 
   return (

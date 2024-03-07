@@ -65,7 +65,7 @@ export default function Carousel() {
             }
         }
     }
-    console.log(countIndex);
+
     return (
         <>
             <CarouselContainer>
