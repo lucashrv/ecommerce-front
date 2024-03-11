@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import ShoppingBag from '@mui/icons-material/ShoppingBag';
 import { LoadingButton } from '@mui/lab';
 import Avatar from '@mui/material/Avatar';
@@ -7,11 +8,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
+import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Input from '../../components/Input';
+import signUpSchema from '../../schemas/user/signUpSchema';
 import userApi from '../../store/user/userSliceApi';
 import { messageActions } from './../../store/message/messageSlice';
 
@@ -25,30 +27,26 @@ export default function SignUpTemplate() {
 
   const [
     signUp,
-    {
-      error: errorSignUp,
-      isLoading: loadingSignUp,
-    }
-  ] = userApi.useSignupMutation()
+    { isLoading: loadingSignUp }
+  ] = userApi.useSignUpMutation()
 
   const {
     register,
     handleSubmit,
-    formState: { errors } // /NOT RESOLVED
+    formState: { errors }
   } = useForm({
     resolver: zodResolver(signUpSchema)
   })
 
   const handleSignUp = async (data) => {
-    try {
-      const signUp = await signup(data)
+    const create = await signUp(data)
 
+    if (create?.error?.data?.error) {
+      dispatch(messageActions.errorMessage({ label: create.error.data.error }))
+    } else {
+      console.log(create)
+      dispatch(messageActions.successMessage({ label: create.data.message }))
       navigate('/login')
-    } catch (err) {
-      console.log(err)
-      console.log(errorSignUp)
-      dispatch(messageActions.errorMessage({ label: err.response.data.error }))
-
     }
   }
 
@@ -57,6 +55,12 @@ export default function SignUpTemplate() {
       <Container
         component="main"
         maxWidth="xs"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+        }}
       >
         <CssBaseline />
         <Box
@@ -64,6 +68,7 @@ export default function SignUpTemplate() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            width: '320px'
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -72,61 +77,40 @@ export default function SignUpTemplate() {
           <Typography component="h1" variant="h5">
             Crie sua conta
           </Typography>
-          <Box component="form" noValidate onSubmit={signUp} sx={{ mt: 2 }}>
-            <Grid container spacing={1} justifyContent="center">
-              <Grid item xs={10}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Nome"
-                  name="name"
-                  size="small"
-                  onChange={updateLocalState}
-                />
-              </Grid>
-              <Grid item xs={10}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Email"
-                  name="email"
-                  size="small"
-                  onChange={updateLocalState}
-                />
-              </Grid>
-              <Grid item xs={10}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Senha"
-                  type="password"
-                  size="small"
-                  onChange={updateLocalState}
-                />
-              </Grid>
-              <Grid item xs={10}>
-                <TextField
-                  required
-                  fullWidth
-                  name="confirmPassword"
-                  label="Confirme a senha"
-                  type="password"
-                  size="small"
-                  onChange={updateLocalState}
-                />
-              </Grid>
-              <Grid item xs={10}>
-                <LoadingButton
-                  type="submit"
-                  loading={loadingSignUp}
-                  variant="contained"
-                  fullWidth
-                  sx={{ mt: 1, mb: 2 }}
-                >
-                  CADASTRE-SE
-                </LoadingButton>
-              </Grid>
+          <Box component="form" noValidate onSubmit={handleSubmit(handleSignUp)} sx={{ mt: 2 }}>
+            <Input
+              label='Nome'
+              focus={true}
+              register={register('name')}
+              errors={errors.name}
+            />
+            <Input
+              label='Email'
+              register={register('email')}
+              errors={errors.email}
+            />
+            <Input
+              label='Senha'
+              type='password'
+              register={register('password')}
+              errors={errors.password}
+            />
+            <Input
+              label='Confirme a senha'
+              type='password'
+              register={register('confirmPassword')}
+              errors={errors.confirmPassword}
+            />
+            <Grid item xs={10}>
+              <LoadingButton
+                type="submit"
+                loading={loadingSignUp}
+                variant="contained"
+                fullWidth
+                sx={{ mt: 1, mb: 2 }}
+              >
+                CADASTRE-SE
+              </LoadingButton>
             </Grid>
             <Grid container style={{ marginRight: '50px' }} justifyContent="center">
               <Grid item>
