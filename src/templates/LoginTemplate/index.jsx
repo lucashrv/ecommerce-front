@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { LoadingButton } from '@mui/lab';
 import Avatar from '@mui/material/Avatar';
@@ -7,21 +8,21 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import useApi from '../../hooks/useReactQuery';
+import loginSchema from '../../schemas/user/loginSchema';
+import { messageActions } from '../../store/message/messageSlice';
+import userApi from '../../store/user/userSliceApi';
+import Input from './../../components/Input';
 
-function Copyright(props) {
+function GoToHome(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        {"Meu Site"}
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
+      <Link color="inherit" href="/">
+        {'Entrar como convidado'}
+      </Link>
     </Typography>
   );
 }
@@ -32,38 +33,38 @@ export default function LoginTemplate() {
 
   const navigate = useNavigate()
 
-  const api = useApi()
+  const dispatch = useDispatch()
 
-  const [data, setData] = useState({})
-
-  const updateData = (event) => {
-    const { name, value } = event.target
-    setData({
-      ...data,
-      [name]: value
-    })
-  }
+  const [
+    login,
+    {
+      isLoading: loadingLogin,
+    }
+  ] = userApi.useLoginMutation()
 
   const {
-    mutateAsync: mutateLogin,
-    loading
-  } = api.mutatePost('/user/login', ['login'])
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: zodResolver(loginSchema)
+  })
 
-  const login = async (e) => {
-    e.preventDefault()
+  const handleLogin = async (data) => {
+    const token = await login(data)
 
-    const token = await mutateLogin(data)
-    console.log(token);
-    if (token.auth.token) {
-      localStorage.setItem('token', token.auth.token)
+    if (token?.data?.auth?.token) {
+
+      localStorage.setItem('token', token.data.auth.token)
       localStorage.setItem('user', JSON.stringify({
-        name: token?.auth?.name,
+        name: token.data.auth.name,
       }))
-
       navigate('/test')
-    }
 
-  };
+    } else if (token?.error?.data?.error) {
+      dispatch(messageActions.errorMessage({ label: token.error.data.error }))
+    }
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -92,32 +93,24 @@ export default function LoginTemplate() {
           </Typography>
           <Box
             component="form"
-            onSubmit={login}
+            onSubmit={handleSubmit(handleLogin)}
             noValidate sx={{ mt: 1 }}
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              size="small"
-              label="Email"
-              name='email'
-              autoFocus
-              onChange={updateData}
+            <Input
+              label='Email'
+              focus={true}
+              register={register('email')}
+              errors={errors.email}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Senha"
-              name='password'
-              type="password"
-              size="small"
-              onChange={updateData}
+            <Input
+              label='Senha'
+              register={register('password')}
+              type='password'
+              errors={errors.password}
             />
             <LoadingButton
               type="submit"
-              loading={loading}
+              loading={loadingLogin}
               variant="contained"
               fullWidth
               sx={{ mt: 1, mb: 2 }}
@@ -133,7 +126,7 @@ export default function LoginTemplate() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        <GoToHome sx={{ mt: 4 }} />
       </Container>
     </ThemeProvider>
   )

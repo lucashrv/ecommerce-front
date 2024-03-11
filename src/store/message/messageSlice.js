@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import messageUtils from "../utils/messageActions"
+import messageUtils from "./messageActions"
 
 const initialState = {
     show: false,

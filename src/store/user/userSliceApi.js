@@ -6,9 +6,19 @@ export const userApi = createApi({
     baseQuery,
     tagTypes: ['user'],
     endpoints: (builder) => ({
-        isAuthenticated: builder.query({
-            query: () => '/user/checkauth',
-            providesTags: ['user'],
+        login: builder.mutation({
+            query: (body) => ({
+                url: '/user/login',
+                body,
+                method: 'POST'
+            })
+        }),
+        signup: builder.mutation({
+            query: (body) => ({
+                url: '/user/signup',
+                body,
+                method: 'POST'
+            })
         })
     })
 })

@@ -1,31 +1,19 @@
-import * as React from 'react';
-import { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import ShoppingBag from '@mui/icons-material/ShoppingBag';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { LoadingButton } from '@mui/lab';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import useAxios from '../../hooks/useAxios';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="#">
-        Meu Site
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import userApi from '../../store/user/userSliceApi';
+import { messageActions } from './../../store/message/messageSlice';
 
 const defaultTheme = createTheme();
 
@@ -33,25 +21,36 @@ export default function SignUpTemplate() {
 
   const navigate = useNavigate()
 
-  const { api, loading, error } = useAxios();
+  const dispatch = useDispatch()
 
-  const [localState, setLocalState] = useState({})
+  const [
+    signUp,
+    {
+      error: errorSignUp,
+      isLoading: loadingSignUp,
+    }
+  ] = userApi.useSignupMutation()
 
-  const updateLocalState = (event) => {
-    const { name, value } = event.target
-    setLocalState({
-      ...localState,
-      [name]: value
-    })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors } // /NOT RESOLVED
+  } = useForm({
+    resolver: zodResolver(signUpSchema)
+  })
+
+  const handleSignUp = async (data) => {
+    try {
+      const signUp = await signup(data)
+
+      navigate('/login')
+    } catch (err) {
+      console.log(err)
+      console.log(errorSignUp)
+      dispatch(messageActions.errorMessage({ label: err.response.data.error }))
+
+    }
   }
-
-  const signUp = async (event) => {
-    event.preventDefault()
-
-    const register = await api.post('/user/register', localState)
-
-    register && navigate('/login')
-  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -120,7 +119,7 @@ export default function SignUpTemplate() {
               <Grid item xs={10}>
                 <LoadingButton
                   type="submit"
-                  loading={loading}
+                  loading={loadingSignUp}
                   variant="contained"
                   fullWidth
                   sx={{ mt: 1, mb: 2 }}
@@ -138,7 +137,6 @@ export default function SignUpTemplate() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );

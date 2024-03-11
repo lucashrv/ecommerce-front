@@ -66,14 +66,14 @@ const Test = () => {
             name: 'RTK Query',
             description: 'Teste RTK Query',
             price: 12,
-            amount: '',
+            amount: 1,
             image: 'image',
             category_id: 1
         }
 
         try {
             const d = await createProduct(data)
-
+            dispatch(messageActions.successMessage({ label: d.data.message }))
             console.log(d);
             console.log(errorCreate);
             console.log(isErrorCreate);
@@ -100,18 +100,18 @@ const Test = () => {
             if (message.show) {
                 dispatch(messageActions.hideMessage())
             } else {
-                dispatch(messageActions.showMessage({
+                dispatch(messageActions.successMessage({
                     label: dest.statusText,
                     variant: 'success'
                 }))
             }
         } catch (err) {
-            const errors = err.response.data.error
+            const errors = err?.response.data.error
             // dispatch(userActions.updateState({ errors }))
             //
             if (!message.show) {
-                dispatch(messageActions.showMessage({
-                    label: err.response.data.error,
+                dispatch(messageActions.errorMessage({
+                    label: err?.response.data.error,
                     variant: 'error'
                 }))
             }

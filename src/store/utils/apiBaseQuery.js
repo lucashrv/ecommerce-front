@@ -4,13 +4,15 @@ import env from './../../schemas/envSchema';
 const baseQuery = fetchBaseQuery({
     baseUrl: env.VITE_DATABASE_URL,
     prepareHeaders: (headers) => {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token');
+
+        headers.set('Content-Type', 'application/json');
 
         if (token) {
-            headers.set('authorization', `Bearer ${token}`)
+            headers.set('Authorization', `Bearer ${token}`);
         }
 
-        return headers
+        return headers;
     }
 })
 
