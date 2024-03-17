@@ -40,4 +40,9 @@ export const productsApi = createApi({
   })
 })
 
-export default productsApi
+export const {
+  useGetProductsQuery,
+  useCreateProductMutation,
+  useUpdateProductMutation,
+  useDestroyProductMutation
+} = productsApi

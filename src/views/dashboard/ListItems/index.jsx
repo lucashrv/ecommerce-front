@@ -8,11 +8,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
-import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 export const mainListItems = (
-    <React.Fragment>
+    <>
         <Link to="/dashboard/users">
             <ListItemButton>
                 <ListItemIcon>
@@ -65,11 +64,11 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Integrations" />
         </ListItemButton>
-    </React.Fragment>
+    </>
 );
 
 export const secondaryListItems = (
-    <React.Fragment>
+    <>
         <ListSubheader component="div" inset>
             Saved reports
         </ListSubheader>
@@ -91,5 +90,5 @@ export const secondaryListItems = (
             </ListItemIcon>
             <ListItemText primary="Year-end sale" />
         </ListItemButton>
-    </React.Fragment>
+    </>
 );

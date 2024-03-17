@@ -6,7 +6,10 @@ import useApi from '../../hooks/useReactQuery';
 import testSchema from '../../schemas/testSchema';
 // import { selectUser, userActions } from '../../store/users/userSlice';
 import { productsActions } from '../../store/products/productsSlice';
-import productsApi from '../../store/products/productsSliceApi';
+import {
+    useCreateProductMutation,
+    useGetProductsQuery
+} from '../../store/products/productsSliceApi';
 import { messageActions, selectMessage } from './../../store/message/messageSlice';
 
 const Test = () => {
@@ -32,7 +35,7 @@ const Test = () => {
     // const { mutateAsync: userLogout } = api.mutatePost('/user/logout', ['logout'])
 
     // const { data: isAuthenticated } = userApi.useIsAuthenticatedQuery()
-    const { data, error, isLoading } = productsApi.useGetProductsQuery()
+    const { data, error, isLoading } = useGetProductsQuery()
 
     const [
         createProduct,
@@ -42,7 +45,7 @@ const Test = () => {
             isLoading: loadingCreate,
             isSuccess
         }
-    ] = productsApi.useCreateProductMutation()
+    ] = useCreateProductMutation()
 
     // const products = useSelector(selectProducts.state.entity)
     const message = useSelector(selectMessage.state)
@@ -71,20 +74,11 @@ const Test = () => {
             category_id: 1
         }
 
-        try {
-            const d = await createProduct(data)
-            dispatch(messageActions.successMessage({ label: d.data.message }))
-            console.log(d);
-            console.log(errorCreate);
-            console.log(isErrorCreate);
-            console.log(loadingCreate);
-            console.log(isSuccess);
-        } catch (error) {
-            console.log(error);
-        }
-
+        const d = await createProduct(data)
+        d.error
+            ? dispatch(messageActions.errorMessage({ label: d?.error?.data?.error }))
+            : dispatch(messageActions.successMessage({ label: d?.data?.message }))
     }
-
 
     // isErrorCreate && dispatch(messageActions.showMessage({
     //     label: errorCreate,
