@@ -51,18 +51,17 @@ export default function LoginTemplate() {
   })
 
   const handleLogin = async (data) => {
-    const token = await login(data)
+    try {
+      const token = await login(data).unwrap()
 
-    if (token?.data?.auth?.token) {
-
-      localStorage.setItem('token', token.data.auth.token)
+      localStorage.setItem('token', token.auth.token)
       localStorage.setItem('user', JSON.stringify({
-        name: token.data.auth.name,
+        name: token.auth.name,
       }))
       navigate('/test')
+    } catch (error) {
 
-    } else if (token?.error?.data?.error) {
-      dispatch(messageActions.errorMessage({ label: token.error.data.error }))
+      dispatch(messageActions.errorMessage({ label: error.data.error }))
     }
   }
 

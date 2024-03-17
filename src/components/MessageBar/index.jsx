@@ -24,7 +24,7 @@ export default function MessageBar(props) {
     return <Slide {...props} direction="left" />;
   }
 
-  const close = (e, reason) => {
+  const close = () => {
     dispatch(messageActions.hideMessage())
   }
 

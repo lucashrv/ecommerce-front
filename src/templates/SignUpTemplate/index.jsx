@@ -39,14 +39,16 @@ export default function SignUpTemplate() {
   })
 
   const handleSignUp = async (data) => {
-    const create = await signUp(data)
 
-    create.data
-      ? (
-        dispatch(messageActions.successMessage({ label: create.data.message })),
-        navigate('/login')
-      )
-      : dispatch(messageActions.errorMessage({ label: create.error.data.error }))
+    try {
+      const create = await signUp(data).unwrap()
+
+      dispatch(messageActions.successMessage({ label: create.message }))
+      navigate('/login')
+    } catch (error) {
+
+      dispatch(messageActions.errorMessage({ label: error.data.error }))
+    }
   }
 
   return (
