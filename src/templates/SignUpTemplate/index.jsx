@@ -10,12 +10,11 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Input';
+import { useSnackbars } from '../../hooks/useSnackbars';
 import signUpSchema from '../../schemas/user/signUpSchema';
 import userApi from '../../store/user/userSliceApi';
-import { messageActions } from './../../store/message/messageSlice';
 
 const defaultTheme = createTheme();
 
@@ -23,7 +22,7 @@ export default function SignUpTemplate() {
 
   const navigate = useNavigate()
 
-  const dispatch = useDispatch()
+  const { successSnackbar, errorSnackbar } = useSnackbars()
 
   const [
     signUp,
@@ -43,11 +42,11 @@ export default function SignUpTemplate() {
     try {
       const create = await signUp(data).unwrap()
 
-      dispatch(messageActions.successMessage({ label: create.message }))
+      successSnackbar(create.message)
       navigate('/login')
     } catch (error) {
 
-      dispatch(messageActions.errorMessage({ label: error.data.error }))
+      errorSnackbar(error.data.error)
     }
   }
 

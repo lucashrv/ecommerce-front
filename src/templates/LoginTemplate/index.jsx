@@ -10,12 +10,11 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import loginSchema from '../../schemas/user/loginSchema';
-import { messageActions } from '../../store/message/messageSlice';
 import userApi from '../../store/user/userSliceApi';
 import Input from './../../components/Input';
+import { useSnackbars } from './../../hooks/useSnackbars';
 
 function GoToHome(props) {
   return (
@@ -33,7 +32,7 @@ export default function LoginTemplate() {
 
   const navigate = useNavigate()
 
-  const dispatch = useDispatch()
+  const { errorSnackbar } = useSnackbars()
 
   const [
     login,
@@ -60,8 +59,7 @@ export default function LoginTemplate() {
       }))
       navigate('/test')
     } catch (error) {
-
-      dispatch(messageActions.errorMessage({ label: error.data.error }))
+      errorSnackbar(error.data.error)
     }
   }
 

@@ -8,22 +8,37 @@ import { Provider } from 'react-redux'
 import store from './store/store'
 
 // Global Style
-import MessageBar from './components/MessageBar/index.jsx'
 import GlobalStyle from './styles/global.jsx'
+
+// Snackbar
+import { SnackbarProvider } from 'notistack'
 
 const client = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <QueryClientProvider client={client}>
-      <Provider store={store}>
+    <Provider store={store}>
+      <QueryClientProvider client={client}>
 
         <GlobalStyle />
-        <MessageBar />
-        <App />
+        <SnackbarProvider
+          maxSnack={2}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          iconVariant={{
+            // success: '✅',
+            // error: '❌',
+            // warning: '⚠️',
+            // info: 'ℹ️',
+          }}
+        >
+          <App />
+        </SnackbarProvider>
 
         {/* <ReactQueryDevtools initialIsOpen={true} /> */}
-      </Provider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </Provider>
   </React.StrictMode>,
 )

@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 // Slices
-import messageReducer from './message/messageSlice'
 import productsReducer from './products/productsSlice';
 
 // RTK Query Api
@@ -10,7 +9,6 @@ import userApi from './user/userSliceApi';
 
 const store = configureStore({
     reducer: {
-        message: messageReducer,
         productsEntity: productsReducer,
         [userApi.reducerPath]: userApi.reducer,
         [productsApi.reducerPath]: productsApi.reducer,

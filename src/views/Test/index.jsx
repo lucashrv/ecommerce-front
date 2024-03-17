@@ -1,21 +1,22 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import useApi from '../../hooks/useReactQuery';
 import testSchema from '../../schemas/testSchema';
 // import { selectUser, userActions } from '../../store/users/userSlice';
+import { useSnackbars } from '../../hooks/useSnackbars';
 import { productsActions } from '../../store/products/productsSlice';
 import {
     useCreateProductMutation,
     useGetProductsQuery
 } from '../../store/products/productsSliceApi';
-import { messageActions, selectMessage } from './../../store/message/messageSlice';
 
 const Test = () => {
-    const dispatch = useDispatch()
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const api = useApi()
+    const { successSnackbar, errorSnackbar } = useSnackbars()
 
     // const {
     //     data,
@@ -28,9 +29,9 @@ const Test = () => {
     //     // isSuccess
     // } = api.mutatePost('/products', ['get-products'])
 
-    // const {
-    //     mutateAsync: mutateDelete
-    // } = api.mutateDelete(['get-products'])
+    const {
+        mutateAsync: mutateDelete
+    } = api.mutateDelete(['get-products'])
 
     // const { mutateAsync: userLogout } = api.mutatePost('/user/logout', ['logout'])
 
@@ -47,68 +48,35 @@ const Test = () => {
         }
     ] = useCreateProductMutation()
 
-    // const products = useSelector(selectProducts.state.entity)
-    const message = useSelector(selectMessage.state)
-
-
-    // useEffect(() => {
-    //     isSuccess && dispatch(messageActions.showMessage({
-    //         label: 'Produto criado',
-    //         variant: 'success'
-    //     }))
-    //     const errorBody = errorCreate.data.errors.body
-    //     isErrorCreate && dispatch(messageActions.showMessage({
-    //         label: Object.keys(errorBody)[0].toString() + errorBody?.price,
-    //         variant: 'error'
-    //     }))
-    // }, [isSuccess, isErrorCreate])
     const despachar = async (e) => {
         e.preventDefault()
 
         const data = {
-            name: 'RTK Query',
-            description: 'Teste RTK Query',
+            name: 'Message test',
+            description: 'Message test',
             price: 12,
             amount: 1,
             image: 'image',
             category_id: 1
         }
 
-        const d = await createProduct(data)
-        d.error
-            ? dispatch(messageActions.errorMessage({ label: d?.error?.data?.error }))
-            : dispatch(messageActions.successMessage({ label: d?.data?.message }))
-    }
+        try {
+            const create = await createProduct(data).unwrap()
 
-    // isErrorCreate && dispatch(messageActions.showMessage({
-    //     label: errorCreate,
-    //     variant: 'error'
-    // }))
+            successSnackbar(create.message)
+        } catch (error) {
+            errorSnackbar(error.data.error)
+        }
+    }
 
     const handleDelete = async (e) => {
         e.preventDefault()
 
         try {
-            const dest = await mutateDelete('/products/22')
-            //
-            if (message.show) {
-                dispatch(messageActions.hideMessage())
-            } else {
-                dispatch(messageActions.successMessage({
-                    label: dest.statusText,
-                    variant: 'success'
-                }))
-            }
-        } catch (err) {
-            const errors = err?.response.data.error
-            // dispatch(userActions.updateState({ errors }))
-            //
-            if (!message.show) {
-                dispatch(messageActions.errorMessage({
-                    label: err?.response.data.error,
-                    variant: 'error'
-                }))
-            }
+            const destroy = await mutateDelete('/products/22').unwrap()
+            successSnackbar(destroy.message)
+        } catch (error) {
+            errorSnackbar(error.data.error)
         }
     }
 
