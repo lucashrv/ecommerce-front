@@ -1,23 +1,14 @@
 import {
-  Navigate,
-  Route,
-  BrowserRouter as Router,
-  Routes
+  Navigate
 } from 'react-router-dom'
 import Navbar from './components/Navbar'
 
 // Public Routes
-import Home from './views/Home'
-import Login from './views/Login'
-import SignUp from './views/SignUp'
 
 // Private Routes
-import Test from './views/Test'
 
 // Dashboard Routes
-import Dashboard from './views/dashboard'
-import Orders from './views/dashboard/Pages/Orders'
-import Users from './views/dashboard/Pages/Users'
+import IndexRoutes from './routes/indexRoutes'
 
 function App() {
 
@@ -61,45 +52,46 @@ function App() {
   }
 
   return (
-    <>
-      <Router>
-        <Routes>
+    <IndexRoutes />
+    // <>
+    //   <Router>
+    //     <Routes>
 
-          {/* Public Routes without Navbar */}
-          <Route
-            path="/signup"
-            element={<RedirectConnected element={SignUp} />}
-          />
-          <Route
-            path="/login"
-            element={<RedirectConnected element={Login} />}
-          />
+    //       {/* Public Routes without Navbar */}
+    //       <Route
+    //         path="/signup"
+    //         element={<RedirectConnected element={SignUp} />}
+    //       />
+    //       <Route
+    //         path="/login"
+    //         element={<RedirectConnected element={Login} />}
+    //       />
 
-          {/* Public Routes with Navbar */}
-          <Route
-            path="/"
-            element={<PublicRouteNav element={Home} />}
-          />
+    //       {/* Public Routes with Navbar */}
+    //       <Route
+    //         path="/"
+    //         element={<PublicRouteNav element={Home} />}
+    //       />
 
-          {/* Private Routes with Navbar */}
-          <Route
-            path="/test"
-            element={<PrivateRouteNav element={Test} />}
-          />
+    //       {/* Private Routes with Navbar */}
+    //       <Route
+    //         path="/test"
+    //         element={<PrivateRouteNav element={Test} />}
+    //       />
 
-          {/* Dashboard Admin Routes */}
-          <Route
-            path="/dashboard/users"
-            element={<Dashboard element={Users} />}
-          />
-          <Route
-            path="/dashboard/orders"
-            element={<Dashboard element={Orders} />}
-          />
+    //       {/* Dashboard Admin Routes */}
+    //       <Route
+    //         path="/dashboard/users"
+    //         element={<Dashboard element={Users} />}
+    //       />
+    //       <Route
+    //         path="/dashboard/orders"
+    //         element={<Dashboard element={Orders} />}
+    //       />
 
-        </Routes>
-      </Router>
-    </>
+    //     </Routes>
+    //   </Router>
+    // </>
   )
 }
 

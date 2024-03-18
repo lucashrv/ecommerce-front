@@ -19,6 +19,10 @@ export const userApi = createApi({
                 body,
                 method: 'POST'
             })
+        }),
+        getRole: builder.query({
+            query: () => '/user/role',
+            providesTags: ['user']
         })
     })
 })
