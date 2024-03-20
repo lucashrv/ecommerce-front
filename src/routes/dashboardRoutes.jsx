@@ -8,49 +8,27 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
-import { Link } from 'react-router-dom';
+import RouteContainer from '../components/Dashboard/RouteContainer';
 
 export const mainListItems = (
     <>
-        <Link to="/dashboard/users">
-            <ListItemButton>
-                <ListItemIcon>
-                    <PeopleIcon />
-                </ListItemIcon>
-                <ListItemText primary="Usuários" />
-            </ListItemButton>
-        </Link>
-        <Link to="/dashboard/orders">
-            <ListItemButton>
-                <ListItemIcon>
-                    <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="Orders" />
-            </ListItemButton>
-        </Link>
+        <RouteContainer
+            to='/dashboard/users'
+            label='Usuários'
+            icon={<PeopleIcon />}
+            path='users'
+        />
+        <RouteContainer
+            to='/dashboard/orders'
+            label='Orders'
+            icon={<ShoppingCartIcon />}
+            path='orders'
+        />
         <ListItemButton>
             <ListItemIcon>
-                <ShoppingCartIcon />
+                <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary="Orders" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <ShoppingCartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Orders" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <ShoppingCartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Orders" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Customers" />
+            <ListItemText primary="Inicio" />
         </ListItemButton>
         <ListItemButton>
             <ListItemIcon>

@@ -7,7 +7,6 @@ import {
     IconButton
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -30,7 +29,7 @@ function TablePaginationActions(props) {
     };
 
     return (
-        <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+        <Box sx={{ flexShrink: 0 }}>
             <IconButton
                 onClick={handleFirstPageButtonClick}
                 disabled={page === 0}
@@ -45,6 +44,7 @@ function TablePaginationActions(props) {
             >
                 {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
             </IconButton>
+            {page}
             <IconButton
                 onClick={handleNextButtonClick}
                 disabled={page >= Math.ceil(count / rowsPerPage) - 1}
@@ -62,12 +62,5 @@ function TablePaginationActions(props) {
         </Box>
     );
 }
-
-TablePaginationActions.propTypes = {
-    count: PropTypes.number.isRequired,
-    onPageChange: PropTypes.func.isRequired,
-    page: PropTypes.number.isRequired,
-    rowsPerPage: PropTypes.number.isRequired,
-};
 
 export default TablePaginationActions

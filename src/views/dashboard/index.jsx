@@ -94,10 +94,15 @@ export default function Dashboard({ element: Component, ...props }) {
             {userRole?.role && (<ThemeProvider theme={defaultTheme}>
                 <Box sx={{ display: 'flex' }}>
                     <CssBaseline />
-                    <AppBar position="absolute" open={open}>
-                        <Toolbar
+                    <AppBar position="absolute" open={open} >
+                        <Container
                             sx={{
                                 pr: '24px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                height: '50px',
+                                marginLeft: open ? '0px' : '80px'
                             }}
                         >
                             <IconButton
@@ -126,21 +131,22 @@ export default function Dashboard({ element: Component, ...props }) {
                                     <NotificationsIcon />
                                 </Badge>
                             </IconButton>
-                        </Toolbar>
+                        </Container>
                     </AppBar>
                     <Drawer variant="permanent" open={open}>
-                        <Toolbar
+                        <Container
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'flex-end',
                                 px: [1],
+                                height: '50px',
                             }}
                         >
                             <IconButton onClick={toggleDrawer}>
                                 <ChevronLeftIcon />
                             </IconButton>
-                        </Toolbar>
+                        </Container>
                         <Divider />
                         <List component="nav">
                             {mainListItems}
