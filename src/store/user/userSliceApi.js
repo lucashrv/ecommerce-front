@@ -23,8 +23,17 @@ export const userApi = createApi({
         getRole: builder.query({
             query: () => '/user/role',
             providesTags: ['user']
+        }),
+        getAll: builder.query({
+            query: (query) => `/users?page=1&limit=10&search=`,
+            providesTags: ['user']
         })
     })
 })
 
-export default userApi
+export const {
+    useGetAllQuery,
+    useGetRoleQuery,
+    useLoginMutation,
+    useSignUpMutation
+} = userApi

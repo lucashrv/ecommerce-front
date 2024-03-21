@@ -1,9 +1,7 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { CircularProgress } from '@mui/joy';
 import MuiAppBar from '@mui/material/AppBar';
-import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbars } from '../../hooks/useSnackbars';
 import { mainListItems, secondaryListItems } from '../../routes/dashboardRoutes';
-import userApi from '../../store/user/userSliceApi';
+import { useGetRoleQuery } from '../../store/user/userSliceApi';
 import { ContainerFlexCenter } from '../../styles/utils';
 
 const drawerWidth = 220;
@@ -80,7 +78,7 @@ export default function Dashboard({ element: Component, ...props }) {
         setOpen(!open);
     };
 
-    const { data: userRole, isSuccess } = userApi.useGetRoleQuery()
+    const { data: userRole, isSuccess } = useGetRoleQuery()
 
     useEffect(() => {
         if (userRole?.role && userRole.role !== 'admin') {
@@ -126,11 +124,6 @@ export default function Dashboard({ element: Component, ...props }) {
                             >
                                 {'Painel do Administrador'}
                             </Typography>
-                            <IconButton color="inherit">
-                                <Badge badgeContent={4} color="secondary">
-                                    <NotificationsIcon />
-                                </Badge>
-                            </IconButton>
                         </Container>
                     </AppBar>
                     <Drawer variant="permanent" open={open}>
@@ -143,6 +136,15 @@ export default function Dashboard({ element: Component, ...props }) {
                                 height: '50px',
                             }}
                         >
+                            <h1
+                                style={{
+                                    marginRight: '15px',
+                                    fontSize: '25px',
+                                    color: '#00000080'
+                                }}
+                            >
+                                Ecommerce
+                            </h1>
                             <IconButton onClick={toggleDrawer}>
                                 <ChevronLeftIcon />
                             </IconButton>

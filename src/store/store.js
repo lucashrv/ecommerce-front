@@ -5,7 +5,7 @@ import productsReducer from './products/productsSlice';
 
 // RTK Query Api
 import { productsApi } from './products/productsSliceApi';
-import userApi from './user/userSliceApi';
+import { userApi } from './user/userSliceApi';
 
 const store = configureStore({
     reducer: {

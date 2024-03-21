@@ -13,6 +13,12 @@ import RouteContainer from '../components/Dashboard/RouteContainer';
 export const mainListItems = (
     <>
         <RouteContainer
+            to='/dashboard/home'
+            label='Início'
+            icon={<DashboardIcon />}
+            path='home'
+        />
+        <RouteContainer
             to='/dashboard/users'
             label='Usuários'
             icon={<PeopleIcon />}

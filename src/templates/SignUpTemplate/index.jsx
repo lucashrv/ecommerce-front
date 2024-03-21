@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Input';
 import { useSnackbars } from '../../hooks/useSnackbars';
 import signUpSchema from '../../schemas/user/signUpSchema';
-import userApi from '../../store/user/userSliceApi';
+import { useSignUpMutation } from '../../store/user/userSliceApi';
 
 const defaultTheme = createTheme();
 
@@ -27,7 +27,7 @@ export default function SignUpTemplate() {
   const [
     signUp,
     { isLoading: loadingSignUp }
-  ] = userApi.useSignUpMutation()
+  ] = useSignUpMutation()
 
   const {
     register,

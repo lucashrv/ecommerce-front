@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import loginSchema from '../../schemas/user/loginSchema';
-import userApi from '../../store/user/userSliceApi';
+import { useLoginMutation } from '../../store/user/userSliceApi';
 import Input from './../../components/Input';
 import { useSnackbars } from './../../hooks/useSnackbars';
 
@@ -39,7 +39,7 @@ export default function LoginTemplate() {
     {
       isLoading: loadingLogin,
     }
-  ] = userApi.useLoginMutation()
+  ] = useLoginMutation()
 
   const {
     register,
