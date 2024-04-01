@@ -1,5 +1,4 @@
 import { createGlobalStyle } from "styled-components";
-import colors from "./colors.jsx";
 
 const GlobalStyle = createGlobalStyle`
     * {
@@ -15,6 +14,23 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         background-color: #fcfcfc;
+    }
+
+    // Scrollbar custom
+    ::-webkit-scrollbar {
+    width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+    background: #a8a8a8;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+    background: #888;
     }
 `
 

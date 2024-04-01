@@ -16,9 +16,9 @@ import Test from '../views/Test'
 
 // Dashboard Routes
 import Dashboard from '../views/dashboard'
-import Orders from '../views/dashboard/Pages/Orders'
+import HomeDashboard from '../views/dashboard/Pages/Home'
 import Users from '../views/dashboard/Pages/Users'
-import Dashboards from '../views/dashboard/index2'
+
 
 function IndexRoutes() {
 
@@ -100,10 +100,6 @@ function IndexRoutes() {
                     path="/test"
                     element={<PrivateRouteNav element={Test} />}
                 />
-                <Route
-                    path="/test2"
-                    element={<Dashboards />}
-                />
 
                 {/* Dashboard Admin Routes */}
                 <Route
@@ -111,8 +107,8 @@ function IndexRoutes() {
                     element={<PrivateDashboard element={Users} />}
                 />
                 <Route
-                    path="/dashboard/orders"
-                    element={<PrivateDashboard element={Orders} />}
+                    path="/dashboard/home"
+                    element={<PrivateDashboard element={HomeDashboard} />}
                 />
 
             </Routes>

@@ -1,3 +1,4 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
     DrawerItemContainer
 } from '../../../views/dashboard/styled';
@@ -6,11 +7,25 @@ export default function DrawerItem(props) {
     const {
         icon,
         label,
-        openDrawer
+        openDrawer,
+        path
     } = props
 
+    const location = useLocation();
+
+    const navigate = useNavigate()
+
+    const selected = location.pathname.split('/')[2] === path
+
+    const handleRedirect = () => {
+        navigate(`/dashboard/${path}`)
+    }
+
     return (
-        <DrawerItemContainer>
+        <DrawerItemContainer
+            onClick={handleRedirect}
+            selected={selected}
+        >
             {icon}
             {openDrawer &&
                 <p

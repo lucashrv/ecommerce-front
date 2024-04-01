@@ -1,82 +1,36 @@
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import MenuIcon from '@mui/icons-material/Menu';
-import { CircularProgress } from '@mui/joy';
-import MuiAppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import MuiDrawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import Toolbar from '@mui/material/Toolbar';
+import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import { CircularProgress, IconButton } from '@mui/joy';
 import Typography from '@mui/material/Typography';
-import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DrawerItem from '../../components/Dashboard/DrawerItem';
 import { useSnackbars } from '../../hooks/useSnackbars';
-import { mainListItems, secondaryListItems } from '../../routes/dashboardRoutes';
 import { useGetRoleQuery } from '../../store/user/userSliceApi';
 import { ContainerFlexCenter } from '../../styles/utils';
-
-const drawerWidth = 220;
-
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
-}));
-
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
-        '& .MuiDrawer-paper': {
-            position: 'relative',
-            whiteSpace: 'nowrap',
-            width: drawerWidth,
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-            boxSizing: 'border-box',
-            ...(!open && {
-                overflowX: 'hidden',
-                transition: theme.transitions.create('width', {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.leavingScreen,
-                }),
-                width: theme.spacing(7),
-                [theme.breakpoints.up('sm')]: {
-                    width: theme.spacing(9),
-                },
-            }),
-        },
-    }),
-);
-
-const defaultTheme = createTheme();
+import {
+    Box,
+    Container,
+    Drawer,
+    DrawerInfo,
+    DrawerInfoItem,
+    DrawerList,
+    MainContainer,
+    MainNav
+} from './styled';
 
 export default function Dashboard({ element: Component, ...props }) {
-    const [open, setOpen] = useState(true);
+
+    const windowWidthCloseDrawer = window.innerWidth < 500 ? false : true
+
+    const [openDrawer, setOpenDrawer] = useState(windowWidthCloseDrawer)
 
     const navigate = useNavigate()
 
     const { errorSnackbar } = useSnackbars()
-
-    const toggleDrawer = () => {
-        setOpen(!open);
-    };
 
     const { data: userRole, isSuccess } = useGetRoleQuery()
 
@@ -89,98 +43,80 @@ export default function Dashboard({ element: Component, ...props }) {
 
     return (
         <>
-            {userRole?.role && (<ThemeProvider theme={defaultTheme}>
-                <Box sx={{ display: 'flex' }}>
-                    <CssBaseline />
-                    <AppBar position="absolute" open={open} >
-                        <Container
-                            sx={{
-                                pr: '24px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                height: '50px',
-                                marginLeft: open ? '0px' : '80px'
-                            }}
-                        >
+            {userRole?.role && (
+                <Container $opendrawer={openDrawer}>
+                    <Drawer $opendrawer={openDrawer}>
+                        <DrawerInfo $opendrawer={openDrawer}>
+                            <DrawerInfoItem $opendrawer={openDrawer}>
+                                <p>Administrador</p>
+                                <h5>Usuário</h5>
+                            </DrawerInfoItem>
                             <IconButton
-                                edge="start"
-                                color="inherit"
-                                aria-label="open drawer"
-                                onClick={toggleDrawer}
-                                sx={{
-                                    marginRight: '36px',
-                                    ...(open && { display: 'none' }),
-                                }}
+                                style={{ color: '#ffffff99' }}
+                                color='inherit'
+                                onClick={() => setOpenDrawer(prev => !prev)}
                             >
-                                <MenuIcon />
+                                {openDrawer
+                                    ? <ArrowBackIosRoundedIcon fontSize='small' />
+                                    : <MenuRoundedIcon fontSize='medium' />
+                                }
                             </IconButton>
+                        </DrawerInfo>
+
+                        <DrawerList>
+                            <DrawerItem
+                                label='Home'
+                                path='home'
+                                icon={<HomeRoundedIcon style={{ fontSize: '1.3rem' }} />}
+                                openDrawer={openDrawer}
+                            />
+                            <DrawerItem
+                                label='Usuários'
+                                path='users'
+                                icon={<PersonRoundedIcon style={{ fontSize: '1.3rem' }} />}
+                                openDrawer={openDrawer}
+                            />
+                            <DrawerItem
+                                label='Sair'
+                                icon={<LogoutRoundedIcon style={{ fontSize: '1.3rem' }} />}
+                                openDrawer={openDrawer}
+                            />
+                        </DrawerList>
+                    </Drawer>
+
+                    <MainContainer>
+                        <MainNav>
                             <Typography
                                 component="h1"
                                 variant="h6"
                                 color="inherit"
                                 noWrap
-                                sx={{ flexGrow: 1 }}
+                                sx={{ flexGrow: 1, color: '#ffffffcc' }}
                             >
-                                {'Painel do Administrador'}
+                                {'E-Commerce'}
                             </Typography>
-                        </Container>
-                    </AppBar>
-                    <Drawer variant="permanent" open={open}>
-                        <Container
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'flex-end',
-                                px: [1],
-                                height: '50px',
-                            }}
-                        >
-                            <h1
-                                style={{
-                                    marginRight: '15px',
-                                    fontSize: '25px',
-                                    color: '#00000080'
-                                }}
+                            <IconButton
+                                style={{ color: '#ffffff99' }}
+                                color='inherit'
+                                onClick={() => { }}
                             >
-                                Ecommerce
-                            </h1>
-                            <IconButton onClick={toggleDrawer}>
-                                <ChevronLeftIcon />
+                                <LogoutRoundedIcon fontSize='medium' />
                             </IconButton>
-                        </Container>
-                        <Divider />
-                        <List component="nav">
-                            {mainListItems}
-                            <Divider sx={{ my: 1 }} />
-                            {secondaryListItems}
-                        </List>
-                    </Drawer>
-                    <Box
-                        component="main"
-                        sx={{
-                            backgroundColor: (theme) =>
-                                theme.palette.mode === 'light'
-                                    ? theme.palette.grey[100]
-                                    : theme.palette.grey[900],
-                            flexGrow: 1,
-                            height: '100vh',
-                            overflow: 'auto',
-                        }}
-                    >
-                        <Toolbar />
-                        <Container maxWidth="lg" sx={{ mt: 3, mb: 3 }}>
+                        </MainNav>
+
+                        <Box>
                             <Component {...props} />
-                        </Container>
-                    </Box>
-                </Box>
-            </ThemeProvider>
+                        </Box>
+
+                    </MainContainer>
+                </Container>
             )}
             {!userRole?.role && (
                 <ContainerFlexCenter>
                     <CircularProgress size="lg" />
                 </ContainerFlexCenter>
             )}
+
         </>
     )
 }

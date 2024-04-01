@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    background-color: #F1F1F1;
+    background-color: #F4F7FF;
     width: 100%;
     min-height: 100vh;
+    min-width: 330px;
     display: grid;
     grid-template-columns: ${(props) => props.$opendrawer ? '180px 1fr' : '50px 1fr'};
     align-items: center;
@@ -15,9 +16,10 @@ export const Container = styled.div`
 `
 
 export const Drawer = styled.div`
-    background-color: #3D6083;
+    background-color: #5e4fa8;
     width: ${(props) => props.$opendrawer ? '100%' : '50px'};
-    border-right: 2px solid #75b1eedc;
+    border-right: 2px solid #6b5ac0;
+    box-shadow: 5px 0 30px 5px rgba(0, 0, 0, 0.135);
     height: 100vh;
     transition: 0.2s ease-in-out;
 `
@@ -65,6 +67,7 @@ export const DrawerList = styled.nav`
 `
 export const DrawerItemContainer = styled.div`
     color: #ffffff99;
+    background-color: ${(props) => props.selected ? '#7865d3' : 'none'};
     width: 100%;
     padding: 8px 11px;
     display: flex;
@@ -73,18 +76,20 @@ export const DrawerItemContainer = styled.div`
     cursor: pointer;
 
     &:hover {
-        background-color: #477dc794
+        background-color: #6959ba;
     }
 `
 
 export const MainContainer = styled.main`
-    border: 1px solid red;
     width: 100%;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `
 
 export const MainNav = styled.nav`
-    background-color: #3D6083;
+    background-color: #5e4fa8;
     width: 100%;
     height: 50px;
     display: flex;
@@ -93,28 +98,8 @@ export const MainNav = styled.nav`
     justify-content: space-between;
 `
 
-export const LogoName = styled.div`
-    color: #ffffffc5;
-    font-size: 1.4rem;
-    max-width: 180px;
-    position: relative;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    @media (max-width: 1200px) {
-        font-size: 1.3rem;
-    }
-
-    @media (max-width: 800px) {
-        font-size: 1.2rem;
-    }
-
-    @media (max-width: 600px) {
-        font-size: 1rem;
-    }
-    @media (max-width: 320px) {
-        font-size: 0.8rem;
-        width: 50px;
-    }
+export const Box = styled.div`
+    width: 98%;
+    margin-top: 20px;
+    box-shadow: -2px -10px 5px 0px rgba(0, 0, 0, 0.2);
 `

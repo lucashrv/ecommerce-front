@@ -1,12 +1,12 @@
 import TablePanel from "../../../components/Dashboard/Table"
 
-export default function Users() {
+export default function HomeDashboard() {
 
     return (
         <>
             <TablePanel
-                title='Listagem de Usuários'
-                searchPlaceholder='Pesquisar Usuários'
+                title='Home'
+                searchPlaceholder='Home'
             />
         </>
     )
