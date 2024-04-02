@@ -2,4 +2,4 @@
 
 ## Working on the project
 
-API Github link - https://github.com/lucashrv/ecommerce
+E-commerce API (Github link) - https://github.com/lucashrv/ecommerce
