@@ -53,10 +53,10 @@ export default function LoginTemplate() {
     try {
       const token = await login(data).unwrap()
 
-      localStorage.setItem('token', token.auth.token)
-      localStorage.setItem('user', JSON.stringify({
-        name: token.auth.name,
-      }))
+      // localStorage.setItem('token', token.auth.token)
+      // localStorage.setItem('user', JSON.stringify({
+      //   name: token.auth.name,
+      // }))
       navigate('/test')
     } catch (error) {
       errorSnackbar(error.data.error)
