@@ -28,10 +28,6 @@ export const userApi = createApi({
             query: (query) => `/users?page=1&limit=10&search=`,
             providesTags: ['user']
         }),
-        checkAuth: builder.query({
-            query: () => `/user/checkauth`,
-            providesTags: ['user']
-        })
     })
 })
 
@@ -39,6 +35,5 @@ export const {
     useGetAllQuery,
     useGetRoleQuery,
     useLoginMutation,
-    useSignUpMutation,
-    checkAuth
+    useSignUpMutation
 } = userApi

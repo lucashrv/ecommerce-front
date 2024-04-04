@@ -11,7 +11,6 @@ import {
     useCreateProductMutation,
     useGetProductsQuery
 } from '../../store/products/productsSliceApi';
-import axiosInstance from '../../utils/axiosInstance';
 
 const Test = () => {
     const navigate = useNavigate()
@@ -82,10 +81,8 @@ const Test = () => {
     }
 
     const logout = async () => {
-        // localStorage.removeItem('token')
-        // localStorage.removeItem('user')
-
-        await axiosInstance.post('/user/logout')
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
 
         navigate('/login')
     }

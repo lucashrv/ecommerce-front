@@ -15,8 +15,6 @@ import SignUp from '../views/SignUp'
 import Test from '../views/Test'
 
 // Dashboard Routes
-import { useLayoutEffect, useState } from 'react'
-import axiosInstance from '../utils/axiosInstance'
 import Dashboard from '../views/dashboard'
 import HomeDashboard from '../views/dashboard/Pages/Home'
 import Users from '../views/dashboard/Pages/Users'
@@ -24,17 +22,7 @@ import Users from '../views/dashboard/Pages/Users'
 
 function IndexRoutes() {
 
-    const [isAuthenticated, setIsAuthenticated] = useState(undefined)
-
-    const authVerify = async () => {
-        const auth = await axiosInstance.get('/user/checkauth')
-
-        setIsAuthenticated(auth.data.auth)
-    };
-
-    useLayoutEffect(() => {
-        authVerify()
-    }, [])
+    const isAuthenticated = localStorage.getItem('token')
 
     // Private route with navbar
     const PrivateRouteNav = ({ element: Component, ...props }) => {
@@ -86,43 +74,41 @@ function IndexRoutes() {
 
     return (
         <Router>
-            {isAuthenticated !== undefined && (
-                <Routes>
+            <Routes>
 
-                    {/* Public Routes without Navbar */}
-                    <Route
-                        path="/signup"
-                        element={<RedirectConnected element={SignUp} />}
-                    />
-                    <Route
-                        path="/login"
-                        element={<RedirectConnected element={Login} />}
-                    />
+                {/* Public Routes without Navbar */}
+                <Route
+                    path="/signup"
+                    element={<RedirectConnected element={SignUp} />}
+                />
+                <Route
+                    path="/login"
+                    element={<RedirectConnected element={Login} />}
+                />
 
-                    {/* Public Routes with Navbar */}
-                    <Route
-                        path="/"
-                        element={<PublicRouteNav element={Home} />}
-                    />
+                {/* Public Routes with Navbar */}
+                <Route
+                    path="/"
+                    element={<PublicRouteNav element={Home} />}
+                />
 
-                    {/* Private Routes with Navbar */}
-                    <Route
-                        path="/test"
-                        element={<PrivateRouteNav element={Test} />}
-                    />
+                {/* Private Routes with Navbar */}
+                <Route
+                    path="/test"
+                    element={<PrivateRouteNav element={Test} />}
+                />
 
-                    {/* Dashboard Admin Routes */}
-                    <Route
-                        path="/dashboard/users"
-                        element={<PrivateDashboard element={Users} />}
-                    />
-                    <Route
-                        path="/dashboard/home"
-                        element={<PrivateDashboard element={HomeDashboard} />}
-                    />
+                {/* Dashboard Admin Routes */}
+                <Route
+                    path="/dashboard/users"
+                    element={<PrivateDashboard element={Users} />}
+                />
+                <Route
+                    path="/dashboard/home"
+                    element={<PrivateDashboard element={HomeDashboard} />}
+                />
 
-                </Routes>
-            )}
+            </Routes>
         </Router>
     )
 }
