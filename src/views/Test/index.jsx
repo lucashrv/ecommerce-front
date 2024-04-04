@@ -80,7 +80,7 @@ const Test = () => {
         }
     }
 
-    const logout = async () => {
+    const handleLogout = () => {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
 
@@ -167,7 +167,7 @@ const Test = () => {
                 deletar
             </button>
             <br /><br />
-            <button onClick={logout}>logout</button>
+            <button onClick={handleLogout}>logout</button>
             <br /><br />
 
         </div>

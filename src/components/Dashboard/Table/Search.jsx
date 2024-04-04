@@ -3,7 +3,6 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
-import * as React from 'react';
 
 export default function Search(props) {
 
@@ -12,34 +11,44 @@ export default function Search(props) {
         disabled = true
     } = props
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Search ...
+    }
+
     return (
         <Paper
             component="form"
             sx={{
-                paddingLeft: '10px',
                 display: 'flex',
                 alignItems: 'center',
                 minWidth: 200,
                 maxWidth: 450,
-                height: 40,
+                height: 30,
                 borderTop: '1px solid #00000018'
             }}
+            onSubmit={handleSubmit}
         >
             <InputBase
-                sx={{ ml: 1, flex: 1 }}
+                sx={{ ml: 1, mr: 1, flex: 1 }}
                 placeholder={placeholder}
-                inputProps={{ 'aria-label': 'search google maps' }}
+                inputProps={{ 'aria-label': placeholder }}
                 disabled={disabled}
             />
-            <Divider sx={{ height: 30, m: 1 }} orientation="vertical" />
+            <Divider sx={{ height: 30, }} orientation="vertical" />
             <IconButton
-                type="button"
-                sx={{ p: '10px' }}
+                type="submit"
+                sx={{
+                    p: '10px 10px 10px 0',
+                    borderRadius: '0  5px 5px 0',
+                    width: '50px',
+                    height: 30
+                }}
                 aria-label="search"
                 disabled={disabled}
             >
                 <SearchIcon />
             </IconButton>
-        </Paper>
+        </Paper >
     );
 }

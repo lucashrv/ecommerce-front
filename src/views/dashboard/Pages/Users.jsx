@@ -6,7 +6,8 @@ export default function Users() {
         <>
             <TablePanel
                 title='Listagem de Usuários'
-                searchPlaceholder='Pesquisar Usuários'
+                searchPlaceholder='Pesquisar Usuário(s)'
+                path='/dashboard/users'
             />
         </>
     )

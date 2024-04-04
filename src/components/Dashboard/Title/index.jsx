@@ -3,8 +3,12 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 
 function Title(props) {
+    const {
+        color = '#1F77FD'
+    } = props
+
     return (
-        <Typography component="h2" variant="h5" color="primary" gutterBottom>
+        <Typography component="h2" variant="h6" sx={{ color }} gutterBottom>
             {props.children}
         </Typography>
     );

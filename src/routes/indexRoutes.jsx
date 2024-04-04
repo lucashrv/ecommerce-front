@@ -22,11 +22,13 @@ import Users from '../views/dashboard/Pages/Users'
 
 function IndexRoutes() {
 
-    const isAuthenticated = localStorage.getItem('token')
+    const authVerify = () => {
+        return localStorage.getItem('token');
+    }
 
     // Private route with navbar
     const PrivateRouteNav = ({ element: Component, ...props }) => {
-        authVerify()
+        const isAuthenticated = authVerify()
 
         return isAuthenticated
             ? <>
@@ -46,7 +48,7 @@ function IndexRoutes() {
 
     // Redirect connected users
     const RedirectConnected = ({ element: Component, ...props }) => {
-        authVerify()
+        const isAuthenticated = authVerify()
 
         return isAuthenticated
             ? <Navigate to="/test" />
@@ -56,7 +58,7 @@ function IndexRoutes() {
 
     // Dashboard Admin private routes
     const PrivateDashboard = ({ element }) => {
-        authVerify()
+        const isAuthenticated = authVerify()
 
         return isAuthenticated
             ? <Dashboard element={element} />
@@ -100,12 +102,12 @@ function IndexRoutes() {
 
                 {/* Dashboard Admin Routes */}
                 <Route
-                    path="/dashboard/users"
-                    element={<PrivateDashboard element={Users} />}
-                />
-                <Route
                     path="/dashboard/home"
                     element={<PrivateDashboard element={HomeDashboard} />}
+                />
+                <Route
+                    path="/dashboard/users"
+                    element={<PrivateDashboard element={Users} />}
                 />
 
             </Routes>

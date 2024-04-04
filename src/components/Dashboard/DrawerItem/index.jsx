@@ -36,7 +36,8 @@ export default function DrawerItem(props) {
                     }}
                 >
                     {label}
-                </p>}
+                </p>
+            }
         </DrawerItemContainer>
     )
 }
