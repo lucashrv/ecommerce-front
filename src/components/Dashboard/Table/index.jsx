@@ -1,18 +1,28 @@
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { CircularProgress } from '@mui/joy';
 import Sheet from '@mui/joy/Sheet';
 import Table from '@mui/joy/Table';
 import {
     Grid,
     Paper
 } from '@mui/material';
+import Box from '@mui/material/Box';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
-import { Link, useLocation } from 'react-router-dom';
+import Popper from '@mui/material/Popper';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Title from '../Title';
 import Search from './Search';
 import {
+    ButtonContainer,
+    LoadingContainer,
     PaginationContainer,
+    PopoverButtonsContainer,
     SearchContainer,
-    TableContainer
+    TableContainer,
+    TdButton
 } from './styled';
 
 export default function TablePanel(props) {
@@ -27,22 +37,39 @@ export default function TablePanel(props) {
         data = [],
         loading = true,
         onRowsPerPageChange,
-        rowsPerPage,
-        currentPage = 1
+        rowsPerPage = 10,
+        onDelete,
+        loadingDelete
     } = props
 
-    // const [page, setPage] = useState(1);
-    function Content() {
-        const location = useLocation();
-        const query = new URLSearchParams(location.search);
-        const page = parseInt(query.get('page') || '1', 10);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [idDelete, setIdDelete] = useState(null);
 
-        console.log(query.get('page'));
-        console.log(page);
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popper' : undefined;
+
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
+    const page = parseInt(query.get('page') || '1', 10);
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        // Redirect to the page that has data
+        if (
+            typeof page === 'number'
+            && page !== Math.ceil(data?.count / rowsPerPage)
+            && data?.count < (rowsPerPage * page)
+        ) {
+            return navigate(`${path}?page=${Math.ceil(data?.count / rowsPerPage)}`)
+        }
+    }, [data])
+
+    function Content() {
         return (
             <Pagination
                 page={page}
-                count={10}
+                count={Math.ceil(data?.count / rowsPerPage) || 1}
                 size='small'
 
                 renderItem={(item) => (
@@ -56,29 +83,12 @@ export default function TablePanel(props) {
                     />
                 )}
             />
-        );// adicionar items per page e contador de itens paginas e total em cima de pagination
+        );
     }
 
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    function createData(name, calories, fat, carbs, protein) {
-        return { name, calories, fat, carbs, protein };
+    const toggleDelete = (event) => {
+        setAnchorEl(anchorEl ? null : event.currentTarget)
     }
-    const rows = [
-        createData('1', 159, 6.0, 24, 4.0),
-        createData('2', 237, 9.0, 37, 4.3),
-        createData('3', 262, 16.0, 24, 6.0),
-        createData('4', 305, 3.7, 67, 4.3),
-        createData('5', 356, 16.0, 49, 3.9),
-        createData('6', 159, 6.0, 24, 4.0),
-        createData('7', 237, 9.0, 37, 4.3),
-        createData('8', 262, 16.0, 24, 6.0),
-        createData('9', 305, 3.7, 67, 4.3),
-        createData('10', 356, 16.0, 49, 3.9),
-    ];
 
     return (
         <Grid container spacing={1}>
@@ -99,52 +109,142 @@ export default function TablePanel(props) {
                     <Search
                         disabled={searchDisabled}
                         placeholder={searchPlaceholder}
+                        loading={loading}
                     />
                 </SearchContainer>
 
-                <TableContainer>
-                    {/* <Typography level="body-sm" textAlign="center" sx={{ mb: 2 }}>
+                {!loading && (
+                    <TableContainer>
+                        {/* <Typography level="body-sm" textAlign="center" sx={{ mb: 2 }}>
                         The table body is scrollable.
                     </Typography> */}
-                    <Sheet sx={{
-                        minHeight: 350,
-                        overflow: 'auto',
-                        bgcolor: '#fefefe',
-                    }}>
-                        <Table
-                            aria-label="list table"
-                            stickyHeader={rows.length > 10 ? true : false}
-                            stickyFooter
-                            hoverRow
-                            size='sm'
-                        >
-                            <thead>
-                                <tr>
-                                    <th>Row</th>
-                                    <th>Calories</th>
-                                    <th>Fat&nbsp;(g)</th>
-                                    <th>Carbs&nbsp;(g)</th>
-                                    <th>Protein&nbsp;(g)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {rows.map((row) => (
-                                    <tr key={row.name}>
-                                        <td>{row.name}</td>
-                                        <td>{row.calories}</td>
-                                        <td>{row.fat}</td>
-                                        <td>{row.carbs}</td>
-                                        <td>{row.protein}</td>
+                        <Sheet sx={{
+                            minHeight: 350,
+                            overflow: 'auto',
+                            bgcolor: '#fefefe',
+                            minWidth: `calc(${rowsContent.length} * 120px + 50px)`
+                        }}>
+                            <Table
+                                aria-label="list table"
+                                stickyHeader={data.rows.length > 10 ? true : false}
+                                hoverRow
+                                noWrap
+                                size='sm'
+                            >
+                                <thead>
+                                    <tr>
+                                        {columnsHeaders.map((item, i) => (
+                                            <th
+                                                key={i}
+                                                style={{ fontSize: '14px' }}
+                                            >
+                                                {item}
+                                            </th>
+                                        ))}
+                                        <th
+                                            style={{
+                                                textAlign: 'right',
+                                                width: '55px',
+                                                fontSize: '14px'
+                                            }}
+                                        >
+                                            Ações
+                                        </th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </Table>
-                        <PaginationContainer>
-                            <Content />
-                        </PaginationContainer>
-                    </Sheet>
-                </TableContainer>
+                                </thead>
+                                <tbody>
+                                    {data.rows.map((row) => (
+                                        //   sx={{
+                                        //     '& svg': {
+                                        //       transition: '0.2s',
+                                        //       transform:
+                                        //         active && order === 'desc' ? 'rotate(0deg)' : 'rotate(180deg)',
+                                        //     },
+                                        //     '&:hover': { '& svg': { opacity: 1 } },
+                                        //   }}
+                                        // <ArrowDownward sx={{ opacity: active ? 1 : 0 }} />
+                                        <tr key={row.email}>
+                                            {rowsContent.map((content, i) => (
+                                                <td
+                                                    key={i}
+                                                    style={{ fontSize: '13px' }}
+                                                >
+                                                    {row[content]}
+                                                </td>
+                                            ))}
+                                            <td>
+                                                <ButtonContainer>
+                                                    <TdButton
+                                                        onClick={() => { }}
+                                                    >
+                                                        <EditOutlinedIcon
+                                                            style={{
+                                                                color: '#0048ff',
+                                                                fontSize: '20px',
+                                                            }}
+                                                        />
+                                                    </TdButton>
+                                                    <TdButton
+                                                        aria-describedby={id}
+                                                        onClick={(e) => {
+                                                            toggleDelete(e)
+                                                            setIdDelete(row.id)
+                                                        }}
+                                                    >
+                                                        <DeleteOutlineOutlinedIcon
+                                                            style={{
+                                                                color: '#db1919',
+                                                                fontSize: '20px',
+                                                            }}
+                                                        />
+                                                    </TdButton>
+                                                </ButtonContainer>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                            <Popper id={id} open={open} anchorEl={anchorEl}>
+                                <Box sx={{
+                                    border: 1,
+                                    p: 2,
+                                    bgcolor: '#f5f5f5',
+                                    borderRadius: '5px'
+                                }}
+                                >
+                                    <h6>Deseja deletar?</h6>
+                                    <PopoverButtonsContainer>
+                                        <button onClick={toggleDelete}>Cancelar</button>
+                                        {loadingDelete
+                                            ? <CircularProgress size='sm' />
+                                            : (
+                                                <button
+                                                    onClick={async () => {
+                                                        await onDelete(idDelete)
+                                                        toggleDelete()
 
+                                                    }}
+                                                >
+                                                    Deletar
+                                                </button>
+                                            )
+                                        }
+
+                                    </PopoverButtonsContainer>
+                                </Box>
+                            </Popper>
+                            <PaginationContainer>
+                                <Content />
+                            </PaginationContainer>
+                        </Sheet>
+                    </TableContainer>
+                )}
+
+                {loading && (
+                    <LoadingContainer>
+                        <CircularProgress size='md' />
+                    </LoadingContainer>
+                )}
             </Paper>
         </Grid >
     );

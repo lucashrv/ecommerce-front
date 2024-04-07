@@ -1,4 +1,5 @@
 import SearchIcon from '@mui/icons-material/Search';
+import { CircularProgress } from '@mui/joy';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
@@ -8,7 +9,8 @@ export default function Search(props) {
 
     const {
         placeholder,
-        disabled = true
+        disabled,
+        loading = true
     } = props
 
     const handleSubmit = (e) => {
@@ -33,7 +35,7 @@ export default function Search(props) {
                 sx={{ ml: 1, mr: 1, flex: 1 }}
                 placeholder={placeholder}
                 inputProps={{ 'aria-label': placeholder }}
-                disabled={disabled}
+                disabled={loading || disabled}
             />
             <Divider sx={{ height: 30, }} orientation="vertical" />
             <IconButton
@@ -45,9 +47,12 @@ export default function Search(props) {
                     height: 30
                 }}
                 aria-label="search"
-                disabled={disabled}
+                disabled={loading || disabled}
             >
-                <SearchIcon />
+                {loading
+                    ? <CircularProgress size='sm' sx={{ marginLeft: '10px' }} />
+                    : <SearchIcon />
+                }
             </IconButton>
         </Paper >
     );

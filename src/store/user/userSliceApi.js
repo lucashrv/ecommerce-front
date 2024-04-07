@@ -4,8 +4,17 @@ import baseQuery from '../utils/apiBaseQuery';
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery,
-    tagTypes: ['user'],
+    tagTypes: ['User'],
     endpoints: (builder) => ({
+        getRole: builder.query({
+            query: () => '/user/role',
+            providesTags: ['User']
+        }),
+        getAll: builder.query({
+            query: ({ page, limit = 10, search }) =>
+                `/users?page=${page}&limit=${limit}&search=`,
+            providesTags: ['User']
+        }),
         login: builder.mutation({
             query: (body) => ({
                 url: '/user/login',
@@ -18,15 +27,15 @@ export const userApi = createApi({
                 url: '/user/signup',
                 body,
                 method: 'POST'
-            })
+            }),
+            invalidatesTags: ['User']
         }),
-        getRole: builder.query({
-            query: () => '/user/role',
-            providesTags: ['user']
-        }),
-        getAll: builder.query({
-            query: (query) => `/users?page=1&limit=10&search=`,
-            providesTags: ['user']
+        deleteUser: builder.mutation({
+            query: (id) => ({
+                url: `/user/${id}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['User']
         }),
     })
 })
@@ -35,5 +44,6 @@ export const {
     useGetAllQuery,
     useGetRoleQuery,
     useLoginMutation,
-    useSignUpMutation
+    useSignUpMutation,
+    useDeleteUserMutation
 } = userApi
