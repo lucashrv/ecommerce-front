@@ -23,14 +23,14 @@ export const Drawer = styled.div`
     transition: 0.2s ease-in-out;
 `
 
-export const DrawerInfo = styled.div`
-    width: 100%;
-    height: 50px;
-    display: flex;
-    padding: 0 10px;
-    align-items: center;
-    justify-content: ${(props) => props.$opendrawer ? 'space-between' : 'center'};
-`
+// export const DrawerInfo = styled.div`
+//     width: 100%;
+//     height: 50px;
+//     display: flex;
+//     padding: 0 10px;
+//     align-items: center;
+//     justify-content: ${(props) => props.$opendrawer ? 'space-between' : 'center'};
+// `
 
 export const DrawerList = styled.nav`
     width: 100%;
@@ -66,7 +66,7 @@ export const DrawerItemContainer = styled.div`
     background-color: ${(props) => props.selected ? '#d9eeff' : 'none'};
     color: ${(props) => props.selected ? '#1F77FD' : '#434343b9'};
     box-shadow: ${(props) => props.selected
-        ? '-5px 0 10px 1px rgba(0, 0, 0, 0.135)'
+        ? '-5px 0 10px 1px rgba(69, 69, 69, 0.135)'
         : ''
     };
     border-bottom: 1px solid #dbdbdb21;

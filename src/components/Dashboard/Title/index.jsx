@@ -8,7 +8,7 @@ function Title(props) {
     } = props
 
     return (
-        <Typography component="h2" variant="h6" sx={{ color }} gutterBottom>
+        <Typography component="h2" variant="h5" sx={{ color }} gutterBottom>
             {props.children}
         </Typography>
     );

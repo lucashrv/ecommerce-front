@@ -1,4 +1,4 @@
-import TablePanel from "../../../components/Dashboard/Table"
+import TablePanel from "../../../../components/Dashboard/Table"
 
 export default function HomeDashboard() {
 

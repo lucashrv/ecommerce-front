@@ -16,8 +16,9 @@ import Test from '../views/Test'
 
 // Dashboard Routes
 import Dashboard from '../views/dashboard'
-import HomeDashboard from '../views/dashboard/Pages/Home'
-import Users from '../views/dashboard/Pages/Users'
+import HomeDashboard from '../views/dashboard/Pages/Home/index'
+import UserForm from '../views/dashboard/Pages/Users/form'
+import Users from './../views/dashboard/Pages/Users/index'
 
 
 function IndexRoutes() {
@@ -100,14 +101,23 @@ function IndexRoutes() {
                     element={<PrivateRouteNav element={Test} />}
                 />
 
+
                 {/* Dashboard Admin Routes */}
+
+                {/* Home */}
                 <Route
                     path="/dashboard/home"
                     element={<PrivateDashboard element={HomeDashboard} />}
                 />
+
+                {/* Users */}
                 <Route
                     path="/dashboard/users"
                     element={<PrivateDashboard element={Users} />}
+                />
+                <Route
+                    path="/dashboard/users/add"
+                    element={<PrivateDashboard element={UserForm} />}
                 />
 
             </Routes>

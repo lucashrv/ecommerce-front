@@ -1,22 +1,27 @@
+import AddIcon from '@mui/icons-material/Add';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { CircularProgress } from '@mui/joy';
-import Sheet from '@mui/joy/Sheet';
-import Table from '@mui/joy/Table';
 import {
+    CircularProgress,
+    Sheet,
+    Table
+} from '@mui/joy';
+import {
+    Box,
+    Fab,
     Grid,
-    Paper
+    Pagination,
+    PaginationItem,
+    Paper,
+    Popper
 } from '@mui/material';
-import Box from '@mui/material/Box';
-import Pagination from '@mui/material/Pagination';
-import PaginationItem from '@mui/material/PaginationItem';
-import Popper from '@mui/material/Popper';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Title from '../Title';
 import Search from './Search';
 import {
     ButtonContainer,
+    HeaderContainer,
     LoadingContainer,
     PaginationContainer,
     PopoverButtonsContainer,
@@ -65,7 +70,7 @@ export default function TablePanel(props) {
         }
     }, [data])
 
-    function Content() {
+    function PaginationComponent() {
         return (
             <Pagination
                 page={page}
@@ -73,6 +78,7 @@ export default function TablePanel(props) {
                 size='small'
 
                 renderItem={(item) => (
+
                     <PaginationItem
                         component={Link}
                         sx={{
@@ -81,7 +87,8 @@ export default function TablePanel(props) {
                         to={`${path}${item.page === 1 ? '' : `?page=${item.page}`}`}
                         {...item}
                     />
-                )}
+                )
+                }
             />
         );
     }
@@ -104,7 +111,18 @@ export default function TablePanel(props) {
                     overflow: 'auto'
                 }}
             >
-                <Title>{title}</Title>
+                <HeaderContainer>
+                    <Title>{title}</Title>
+                    <Link to={`${path}/add`}>
+                        <Fab
+                            size="medium"
+                            color="primary"
+                            aria-label="add"
+                        >
+                            <AddIcon />
+                        </Fab>
+                    </Link>
+                </HeaderContainer>
                 <SearchContainer>
                     <Search
                         disabled={searchDisabled}
@@ -234,7 +252,7 @@ export default function TablePanel(props) {
                                 </Box>
                             </Popper>
                             <PaginationContainer>
-                                <Content />
+                                <PaginationComponent />
                             </PaginationContainer>
                         </Sheet>
                     </TableContainer>

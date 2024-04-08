@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import TablePanel from "../../../components/Dashboard/Table";
-import { useSnackbars } from "../../../hooks/useSnackbars";
-import { useDeleteUserMutation, useGetAllQuery } from "../../../store/user/userSliceApi";
+import TablePanel from "../../../../components/Dashboard/Table";
+import { useSnackbars } from "../../../../hooks/useSnackbars";
+import { useDeleteUserMutation, useGetAllQuery } from "../../../../store/user/userSliceApi";
 
 export default function Users() {
 

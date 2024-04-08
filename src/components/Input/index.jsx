@@ -7,7 +7,8 @@ const Input = (props) => {
         type = 'text',
         errors = false,
         register,
-        focus = false
+        focus = false,
+        ml = '0px'
     } = props
 
     return <>
@@ -18,7 +19,7 @@ const Input = (props) => {
             type={type}
             size="small"
             {...register}
-            style={{ width: 320, marginTop: 5 }}
+            style={{ maxWidth: 320, marginTop: 5, marginLeft: ml }}
             autoFocus={focus}
         />
         {
