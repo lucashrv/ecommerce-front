@@ -4,6 +4,8 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Search(props) {
 
@@ -13,9 +15,24 @@ export default function Search(props) {
         loading = true
     } = props
 
+    const navigate = useNavigate()
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
+
+    const [search, setSearch] = useState('')
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Search ...
+
+        if (search) {
+            !query.has('search')
+                ? query.append('search', search)
+                : query.set('search', search)
+
+            query.delete('page');
+
+            navigate(location.pathname + '?' + query.toString());
+        }
     }
 
     return (
@@ -36,6 +53,7 @@ export default function Search(props) {
                 placeholder={placeholder}
                 inputProps={{ 'aria-label': placeholder }}
                 disabled={loading || disabled}
+                onChange={(e) => setSearch(e.target.value)}
             />
             <Divider sx={{ height: 30, }} orientation="vertical" />
             <IconButton

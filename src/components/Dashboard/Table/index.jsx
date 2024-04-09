@@ -70,13 +70,29 @@ export default function TablePanel(props) {
         }
     }, [data])
 
+    const setQueryParameters = (e) => {
+        const page = e.target.innerText
+
+        if (page === '1') {
+            query.delete('page')
+        } else {
+            !query.has('page')
+                ? query.append('page', page)
+                : query.set('page', page)
+        }
+
+        query.sort()
+
+        navigate(location.pathname + '?' + query.toString());
+    }
+
     function PaginationComponent() {
         return (
             <Pagination
                 page={page}
                 count={Math.ceil(data?.count / rowsPerPage) || 1}
                 size='small'
-
+                onClick={setQueryParameters}
                 renderItem={(item) => (
 
                     <PaginationItem
@@ -84,7 +100,7 @@ export default function TablePanel(props) {
                         sx={{
                             border: '1px solid #a6a6a616'
                         }}
-                        to={`${path}${item.page === 1 ? '' : `?page=${item.page}`}`}
+                        // to={`${path}${item.page === 1 ? '' : `?page=${item.page}`}`}
                         {...item}
                     />
                 )

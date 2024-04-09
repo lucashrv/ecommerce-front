@@ -7,14 +7,22 @@ import { useDeleteUserMutation, useGetAllQuery } from "../../../../store/user/us
 export default function Users() {
 
     const location = useLocation();
-    const query = new URLSearchParams(location.search);
-    const page = parseInt(query.get('page') || '1', 10);
+    const query = new URLSearchParams(location.search)
+    const page = parseInt(query.get('page') || '1', 10)
+    const search = query.get('search').toString()
 
     const navigate = useNavigate()
 
     const { successSnackbar, errorSnackbar } = useSnackbars()
 
-    const { data: usersData, isLoading } = useGetAllQuery({ page: page < 1 ? 1 : page })
+    const {
+        data: usersData,
+        isLoading
+    } = useGetAllQuery({
+        page: page < 1 ? 1 : page,
+        search
+    })
+
     const [deleteUser, { isLoading: loadingDelete }] = useDeleteUserMutation()
 
     const columnsHeaders = [
