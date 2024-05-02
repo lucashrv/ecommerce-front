@@ -4,26 +4,32 @@ import {
     Grid,
     Paper
 } from '@mui/material';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../../../../../components/Button';
 import Title from '../../../../../components/Dashboard/Title';
-import Input from '../../../../../components/Input';
-import Select from '../../../../../components/Select';
+// import Input from '../../../../../components/Input';
+// import Select from '../../../../../components/Select';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Input from '../../../../../components/Dashboard/Input';
+import Select from '../../../../../components/Dashboard/Select';
 import { useSnackbars } from '../../../../../hooks/useSnackbars';
-import { useSignUpMutation } from '../../../../../store/user/userSliceApi';
+import { useGetOneQuery, useSignUpMutation } from '../../../../../store/user/userSliceApi';
 import Separator from './../../../../../components/Separator/index';
+import signUpSchema from './../../../../../schemas/user/signUpSchema';
 
 export default function UserForm() {
 
-    const id = false
+    const params = useParams()
+
+    const id = useMemo(() => !!params.id, [])
 
     const navigate = useNavigate()
 
-    const location = useLocation()
-    const pathnameBack = `/dashboard/${location.pathname.split('/')[2]}`
-
     const { successSnackbar, errorSnackbar } = useSnackbars()
+
+    const { data: userEdit } = useGetOneQuery({ id: params.id }, { skip: !id })
 
     const [
         signUp,
@@ -35,7 +41,7 @@ export default function UserForm() {
         email: '',
         password: '',
         confirmPassword: '',
-        role: ''
+        role: 'user'
     }
 
     const {
@@ -44,19 +50,29 @@ export default function UserForm() {
         reset,
         formState: { errors }
     } = useForm({
-
-        defaultValues
+        resolver: zodResolver(signUpSchema),
+        defaultValues,
+        values: userEdit,
+        resetOptions: {
+            keepDirtyValues: true
+        }
     })
+
+    useEffect(() => {
+        reset(userEdit)
+    }, [reset, userEdit])
 
     const onSave = async (data) => {
         try {
-            const create = await signUp(data).unwrap()
+            const save =
+                id
+                    ? await update(data).unwrap()
+                    : await signUp(data).unwrap()
 
             reset()
 
-            successSnackbar(create.message)
+            successSnackbar(save.message)
         } catch (error) {
-            console.log(error);
             errorSnackbar(error.data.error)
         }
     }
@@ -86,36 +102,39 @@ export default function UserForm() {
                         <Input
                             label='Nome'
                             register={register('name')}
+                            focus={!!id ? false : true}
                             errors={errors.name}
                         />
                         <Separator />
                         <Select
-                            label='Permissão'
-                            options={selectOptions}
+                            label="Permissões"
                             register={register('role')}
+                            options={selectOptions}
+                            errors={errors.role}
                         />
                         <Separator />
                         <Input
                             label='E-mail'
-                            focus={!!id ? false : true}
                             register={register('email')}
                             errors={errors.email}
                         />
                         <Separator />
-                        <Input
-                            label='Senha'
-                            register={register('password')}
-                            type='password'
-                            errors={errors.password}
-                        />
-                        <Separator />
-                        <Input
-                            label='Confirme a senha'
-                            type='password'
-                            register={register('confirmPassword')}
-                            errors={errors.confirmPassword}
-                        />
-                        <Separator />
+                        {!id && <>
+                            <Input
+                                label='Senha'
+                                register={register('password')}
+                                type='password'
+                                errors={errors.password}
+                            />
+                            <Separator />
+                            <Input
+                                label='Confirme a senha'
+                                type='password'
+                                register={register('confirmPassword')}
+                                errors={errors.confirmPassword}
+                            />
+                            <Separator />
+                        </>}
                         <Grid
                             container
                             style={{
@@ -132,7 +151,7 @@ export default function UserForm() {
                                 fontSize='11px'
                                 type='button'
                                 loading={isLoading}
-                                onClick={() => navigate(pathnameBack)}
+                                onClick={() => navigate(-1)}
                             />
                             <Button
                                 label={`${!!id ? 'Editar' : 'Cadastrar'}`}

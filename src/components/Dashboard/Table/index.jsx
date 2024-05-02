@@ -51,11 +51,12 @@ export default function TablePanel(props) {
     const [idDelete, setIdDelete] = useState(null);
 
     const open = Boolean(anchorEl);
-    const id = open ? 'simple-popper' : undefined;
+    const idOpen = open ? 'simple-popper' : undefined;
 
     const location = useLocation();
     const query = new URLSearchParams(location.search);
     const page = parseInt(query.get('page') || '1', 10);
+    const search = query.get('search')
 
     const navigate = useNavigate()
 
@@ -63,10 +64,13 @@ export default function TablePanel(props) {
         // Redirect to the page that has data
         if (
             typeof page === 'number'
+            && data?.count
             && page !== Math.ceil(data?.count / rowsPerPage)
             && data?.count < (rowsPerPage * page)
         ) {
-            return navigate(`${path}?page=${Math.ceil(data?.count / rowsPerPage)}`)
+            return navigate(`
+                ${path}?page=${Math.ceil(data?.count / rowsPerPage)}&${search ? 'search=' + search : ''}
+            `)
         }
     }, [data])
 
@@ -209,7 +213,7 @@ export default function TablePanel(props) {
                                             <td>
                                                 <ButtonContainer>
                                                     <TdButton
-                                                        onClick={() => { }}
+                                                        onClick={() => navigate(`${path}/edit/${row.id}`)}
                                                     >
                                                         <EditOutlinedIcon
                                                             style={{
@@ -219,7 +223,7 @@ export default function TablePanel(props) {
                                                         />
                                                     </TdButton>
                                                     <TdButton
-                                                        aria-describedby={id}
+                                                        aria-describedby={idOpen}
                                                         onClick={(e) => {
                                                             toggleDelete(e)
                                                             setIdDelete(row.id)
@@ -238,7 +242,7 @@ export default function TablePanel(props) {
                                     ))}
                                 </tbody>
                             </Table>
-                            <Popper id={id} open={open} anchorEl={anchorEl}>
+                            <Popper id={idOpen} open={open} anchorEl={anchorEl}>
                                 <Box sx={{
                                     border: 1,
                                     p: 2,

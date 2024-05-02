@@ -1,36 +1,37 @@
-
-import { Select as SelectMui } from '@mui/joy';
-import Option from '@mui/joy/Option';
-import InputErrorMessage from '../InputErrorMessage';
+import InputErrorMessage from '../../InputErrorMessage'
+import Separator from '../../Separator'
+import { OptionStyled, P, SelectStyled } from './styled'
 
 export default function Select(props) {
 
     const {
         label,
-        options = [],
         register,
         defaultValue,
+        options,
         errors,
-        ref
     } = props
 
     return (<>
-        <SelectMui
-            placeholder={label}
-            style={{ maxWidth: 320, marginTop: 5 }}
+        <Separator height='5px' />
+
+        <P>{label}</P>
+
+        <Separator />
+        <SelectStyled
+            id={label}
             {...register}
             defaultValue={defaultValue}
-            ref={ref}
         >
             {options.map((item, i) => (
-                <Option
+                <OptionStyled
                     key={i}
                     value={item.value}
                 >
                     {item.label}
-                </Option>
+                </OptionStyled>
             ))}
-        </SelectMui>
+        </SelectStyled>
         {
             errors &&
             <InputErrorMessage message={errors.message} />

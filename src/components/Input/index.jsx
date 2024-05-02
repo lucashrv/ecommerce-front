@@ -8,16 +8,18 @@ const Input = (props) => {
         errors = false,
         register,
         focus = false,
-        ml = '0px'
+        ml = '0px',
+        defaultValue
     } = props
 
-    return <>
+    return (<>
         <TextField
             margin="none"
             fullWidth
             label={label}
             type={type}
             size="small"
+            defaultValue={defaultValue}
             {...register}
             style={{ maxWidth: 320, marginTop: 5, marginLeft: ml }}
             autoFocus={focus}
@@ -26,7 +28,7 @@ const Input = (props) => {
             errors &&
             <InputErrorMessage message={errors.message} />
         }
-    </>
+    </>)
 }
 
 export default Input

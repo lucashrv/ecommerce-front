@@ -119,6 +119,10 @@ function IndexRoutes() {
                     path="/dashboard/users/add"
                     element={<PrivateDashboard element={UserForm} />}
                 />
+                <Route
+                    path="/dashboard/users/edit/:id"
+                    element={<PrivateDashboard element={UserForm} />}
+                />
 
             </Routes>
         </Router>

@@ -28,10 +28,11 @@ export default function Search(props) {
             !query.has('search')
                 ? query.append('search', search)
                 : query.set('search', search)
-
             query.delete('page');
 
             navigate(location.pathname + '?' + query.toString());
+        } else {
+            navigate(location.pathname);
         }
     }
 
@@ -54,6 +55,7 @@ export default function Search(props) {
                 inputProps={{ 'aria-label': placeholder }}
                 disabled={loading || disabled}
                 onChange={(e) => setSearch(e.target.value)}
+                defaultValue={query.has('search') ? query.get('search') : ''}
             />
             <Divider sx={{ height: 30, }} orientation="vertical" />
             <IconButton

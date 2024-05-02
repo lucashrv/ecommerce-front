@@ -9,12 +9,13 @@ export default function Users() {
     const location = useLocation();
     const query = new URLSearchParams(location.search)
     const page = parseInt(query.get('page') || '1', 10)
-    const search = query.get('search').toString()
-
+    console.log(query.get('search'));
+    const search = query.has('search') ? query.get('search').toString() : ''
     const navigate = useNavigate()
+    console.log(query.get('search'));
 
     const { successSnackbar, errorSnackbar } = useSnackbars()
-
+    console.log(search);
     const {
         data: usersData,
         isLoading
