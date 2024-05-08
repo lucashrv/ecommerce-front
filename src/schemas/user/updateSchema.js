@@ -1,7 +1,7 @@
 import { z } from "zod";
 import messages from "../messages";
 
-const signUpSchema = z.object({
+const updateSchema = z.object({
     name: z.string()
         .min(1, messages(1).required)
         .max(40, messages(40).maxSize),
@@ -9,14 +9,8 @@ const signUpSchema = z.object({
         .min(1, messages().required)
         .max(40, messages(40).maxSize)
         .email(messages().email),
-    password: z.string()
-        .min(8, messages(8).minSize)
-        .max(30, messages(30).maxSize),
-    confirmPassword: z.string()
-        .min(8, messages(8).minSize)
-        .max(30, messages(30).maxSize),
     balance: z.number(),
     role: z.string()
 })
 
-export default signUpSchema
+export default updateSchema

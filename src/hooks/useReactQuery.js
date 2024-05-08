@@ -35,10 +35,8 @@ export default function useApi() {
             },
             onSuccess: (data) => {
                 queryClient.invalidateQueries(key)
-                console.log(data);
             },
             onError: (error) => {
-                console.log(error);
             }
         })
     }

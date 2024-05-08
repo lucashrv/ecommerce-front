@@ -18,7 +18,7 @@ export const userApi = createApi({
         getOne: builder.query({
             query: ({ id }) =>
                 `/user/${id}`,
-            providesTags: ['User']
+            providesTags: ['Users']
         }),
         login: builder.mutation({
             query: (body) => ({
@@ -32,6 +32,14 @@ export const userApi = createApi({
                 url: '/user/signup',
                 body,
                 method: 'POST'
+            }),
+            invalidatesTags: ['Users']
+        }),
+        updateUser: builder.mutation({
+            query: ({ id, body }) => ({
+                url: `/user/${id}`,
+                body,
+                method: 'PUT'
             }),
             invalidatesTags: ['Users']
         }),
@@ -51,5 +59,6 @@ export const {
     useLoginMutation,
     useSignUpMutation,
     useDeleteUserMutation,
-    useGetOneQuery
+    useGetOneQuery,
+    useUpdateUserMutation
 } = userApi

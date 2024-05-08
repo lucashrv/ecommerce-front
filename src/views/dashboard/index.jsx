@@ -51,8 +51,7 @@ export default function Dashboard({ element: Component, ...props }) {
 
     return (
         <>
-            {/* {userRole?.role && userRole.role === 'admin' && ( */}
-            {true && (
+            {userRole?.role && userRole.role === 'admin' && (
                 <>
                     <MainNav>
                         <LogoContainer>
@@ -120,8 +119,7 @@ export default function Dashboard({ element: Component, ...props }) {
                     </Container>
                 </>
             )}
-            {/* {!userRole?.role && ( */}
-            {false && (
+            {!userRole?.role && (
                 <ContainerFlexCenter>
                     <CircularProgress size="lg" />
                 </ContainerFlexCenter>

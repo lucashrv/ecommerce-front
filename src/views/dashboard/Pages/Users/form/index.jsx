@@ -1,23 +1,22 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
     Box,
     Container,
     Grid,
     Paper
 } from '@mui/material';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../../../../../components/Button';
-import Title from '../../../../../components/Dashboard/Title';
-// import Input from '../../../../../components/Input';
-// import Select from '../../../../../components/Select';
-import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '../../../../../components/Dashboard/Input';
 import Select from '../../../../../components/Dashboard/Select';
+import Title from '../../../../../components/Dashboard/Title';
 import { useSnackbars } from '../../../../../hooks/useSnackbars';
-import { useGetOneQuery, useSignUpMutation } from '../../../../../store/user/userSliceApi';
+import { useGetOneQuery, useSignUpMutation, useUpdateUserMutation } from '../../../../../store/user/userSliceApi';
 import Separator from './../../../../../components/Separator/index';
 import signUpSchema from './../../../../../schemas/user/signUpSchema';
+import updateSchema from './../../../../../schemas/user/updateSchema';
 
 export default function UserForm() {
 
@@ -30,18 +29,24 @@ export default function UserForm() {
     const { successSnackbar, errorSnackbar } = useSnackbars()
 
     const { data: userEdit } = useGetOneQuery({ id: params.id }, { skip: !id })
-
+    console.log(userEdit);
     const [
         signUp,
-        { isLoading }
+        { isLoading: signUpLoading }
     ] = useSignUpMutation()
+
+    const [
+        updateUser,
+        { isLoading: updateLoading }
+    ] = useUpdateUserMutation()
 
     const defaultValues = {
         name: '',
         email: '',
         password: '',
         confirmPassword: '',
-        role: 'user'
+        role: 'user',
+        balance: 0
     }
 
     const {
@@ -50,7 +55,7 @@ export default function UserForm() {
         reset,
         formState: { errors }
     } = useForm({
-        resolver: zodResolver(signUpSchema),
+        resolver: zodResolver(id ? updateSchema : signUpSchema),
         defaultValues,
         values: userEdit,
         resetOptions: {
@@ -58,18 +63,14 @@ export default function UserForm() {
         }
     })
 
-    useEffect(() => {
-        reset(userEdit)
-    }, [reset, userEdit])
-
     const onSave = async (data) => {
         try {
             const save =
                 id
-                    ? await update(data).unwrap()
+                    ? await updateUser({ id: params.id, body: data }).unwrap()
                     : await signUp(data).unwrap()
 
-            reset()
+            !id && reset() // ver porque ao update não atualiza o usuário no form de update
 
             successSnackbar(save.message)
         } catch (error) {
@@ -96,14 +97,22 @@ export default function UserForm() {
                     overflow: 'auto'
                 }}
             >
-                <Title>{`${!!id ? 'Editar' : 'Cadastrar'} Usuário`}</Title>
+                <Title>{`${id ? 'Editar' : 'Cadastrar'} Usuário`}</Title>
                 <Container component="main" >
                     <Box component="form" noValidate onSubmit={handleSubmit(onSave)}>
                         <Input
                             label='Nome'
                             register={register('name')}
-                            focus={!!id ? false : true}
+                            focus={!id}
                             errors={errors.name}
+                        />
+                        <Separator />
+                        <Input
+                            label='Saldo'
+                            register={register('balance', {
+                                setValueAs: v => parseFloat(v),
+                            })}
+                            errors={errors.balance}
                         />
                         <Separator />
                         <Select
@@ -150,15 +159,15 @@ export default function UserForm() {
                                 padding='3px'
                                 fontSize='11px'
                                 type='button'
-                                loading={isLoading}
+                                loading={signUpLoading || updateLoading}
                                 onClick={() => navigate(-1)}
                             />
                             <Button
-                                label={`${!!id ? 'Editar' : 'Cadastrar'}`}
+                                label={`${id ? 'Editar' : 'Cadastrar'}`}
                                 padding='3px'
                                 fontSize='11px'
                                 color='success'
-                                loading={isLoading}
+                                loading={signUpLoading || updateLoading}
                             />
                         </Grid>
                     </Box>

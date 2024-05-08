@@ -41,7 +41,7 @@ export default function TablePanel(props) {
         rowsContent = [],
         data = [],
         loading = true,
-        onRowsPerPageChange,
+        // onRowsPerPageChange,
         rowsPerPage = 10,
         onDelete,
         loadingDelete
@@ -76,7 +76,7 @@ export default function TablePanel(props) {
 
     const setQueryParameters = (e) => {
         const page = e.target.innerText
-
+        const navigateIconName = e.nativeEvent.target.dataset.testid // criar nova paginação front
         if (page === '1') {
             query.delete('page')
         } else {
@@ -104,7 +104,6 @@ export default function TablePanel(props) {
                         sx={{
                             border: '1px solid #a6a6a616'
                         }}
-                        // to={`${path}${item.page === 1 ? '' : `?page=${item.page}`}`}
                         {...item}
                     />
                 )
@@ -153,9 +152,6 @@ export default function TablePanel(props) {
 
                 {!loading && (
                     <TableContainer>
-                        {/* <Typography level="body-sm" textAlign="center" sx={{ mb: 2 }}>
-                        The table body is scrollable.
-                    </Typography> */}
                         <Sheet sx={{
                             minHeight: 350,
                             overflow: 'auto',
@@ -192,15 +188,6 @@ export default function TablePanel(props) {
                                 </thead>
                                 <tbody>
                                     {data.rows.map((row) => (
-                                        //   sx={{
-                                        //     '& svg': {
-                                        //       transition: '0.2s',
-                                        //       transform:
-                                        //         active && order === 'desc' ? 'rotate(0deg)' : 'rotate(180deg)',
-                                        //     },
-                                        //     '&:hover': { '& svg': { opacity: 1 } },
-                                        //   }}
-                                        // <ArrowDownward sx={{ opacity: active ? 1 : 0 }} />
                                         <tr key={row.email}>
                                             {rowsContent.map((content, i) => (
                                                 <td
@@ -260,7 +247,6 @@ export default function TablePanel(props) {
                                                     onClick={async () => {
                                                         await onDelete(idDelete)
                                                         toggleDelete()
-
                                                     }}
                                                 >
                                                     Deletar
