@@ -15,7 +15,7 @@ import Title from '../../../../../components/Dashboard/Title';
 import { useSnackbars } from '../../../../../hooks/useSnackbars';
 import { useGetOneQuery, useSignUpMutation, useUpdateUserMutation } from '../../../../../store/user/userSliceApi';
 import Separator from './../../../../../components/Separator/index';
-import signUpSchema from './../../../../../schemas/user/signUpSchema';
+import createSchema from './../../../../../schemas/user/createSchema';
 import updateSchema from './../../../../../schemas/user/updateSchema';
 
 export default function UserForm() {
@@ -55,7 +55,7 @@ export default function UserForm() {
         reset,
         formState: { errors }
     } = useForm({
-        resolver: zodResolver(id ? updateSchema : signUpSchema),
+        resolver: zodResolver(id ? updateSchema : createSchema),
         defaultValues,
         values: userEdit,
         resetOptions: {

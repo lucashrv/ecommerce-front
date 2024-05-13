@@ -14,7 +14,9 @@ const signUpSchema = z.object({
         .max(30, messages(30).maxSize),
     confirmPassword: z.string()
         .min(8, messages(8).minSize)
-        .max(30, messages(30).maxSize)
+        .max(30, messages(30).maxSize),
+    balance: z.number(),
+    role: z.string()
 })
 
 export default signUpSchema
