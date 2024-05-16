@@ -97,7 +97,7 @@ export default function Dashboard({ element: Component, ...props }) {
                                     />
                                     <DrawerItem
                                         label='Usuários'
-                                        path='users'
+                                        path='users?page=1'
                                         icon={<PersonRoundedIcon style={{ fontSize: '1.3rem' }} />}
                                         openDrawer={openDrawer}
                                     />

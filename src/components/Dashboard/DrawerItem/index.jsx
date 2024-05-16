@@ -15,7 +15,7 @@ export default function DrawerItem(props) {
 
     const navigate = useNavigate()
 
-    const selected = location.pathname.split('/')[2] === path
+    const selected = location.pathname.split('/')[2] === path.split('?')[0]
 
     const handleRedirect = () => {
         navigate(`/dashboard/${path}`)

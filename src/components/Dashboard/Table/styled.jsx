@@ -4,6 +4,16 @@ export const SearchContainer = styled.div`
     margin: 5px 0 15px 0;
 `
 
+export const XButton = styled.button`
+    background-color: inherit;
+    padding: 3px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+`
+
 export const TableContainer = styled.div`
     border: 1px solid #00000017;
     box-shadow: -1px -1px 10px 1px rgba(0, 0, 0, 0.151);
@@ -84,4 +94,51 @@ export const HeaderContainer = styled.header`
     display: flex;
     align-items: center;
     justify-content: space-between;
+`
+
+// TablePagination styled
+
+export const TablePagContainer = styled.div`
+padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 2px;
+`
+
+export const ButtonNavigate = styled.button`
+    border: .5px solid #4646463b;
+    background-color: inherit;
+    padding: 2px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #e8e7e7;
+    }
+`
+
+export const ButtonNavigatePages = styled.button`
+    border: .5px solid #4646463b;
+    width: 29.33px;
+    height: 29.33px;
+    background-color: inherit;
+    padding: 2px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    cursor: pointer;
+
+    background-color: ${(props) => props.selected ? '#d7d7d7' : 'inherit'};
+
+    &:hover {
+        background-color: ${(props) => props.selected ? '#d7d7d7' : '#e8e7e7'};
+    }
 `

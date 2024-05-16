@@ -6,6 +6,7 @@ import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { XButton } from './styled';
 
 export default function Search(props) {
 
@@ -28,13 +29,27 @@ export default function Search(props) {
             !query.has('search')
                 ? query.append('search', search)
                 : query.set('search', search)
-            query.delete('page');
+            query.set('page', 1);
+
+            query.sort()
 
             navigate(location.pathname + '?' + query.toString());
         } else {
-            navigate(location.pathname);
+            navigate(`${location.pathname}?page=1`);
         }
     }
+
+    // const deleteSearch = () => {
+    //     if (query.has('search')) {
+    //         console.log('ner');
+    //         query.delete('search')
+    //         query.set('page', 1)
+
+    //         setSearch('')
+
+    //         navigate(location.pathname + '?' + query.toString());
+    //     }
+    // }
 
     return (
         <Paper
@@ -50,13 +65,14 @@ export default function Search(props) {
             onSubmit={handleSubmit}
         >
             <InputBase
-                sx={{ ml: 1, mr: 1, flex: 1 }}
+                sx={{ ml: 1, flex: 1 }}
                 placeholder={placeholder}
                 inputProps={{ 'aria-label': placeholder }}
                 disabled={loading || disabled}
                 onChange={(e) => setSearch(e.target.value)}
-                defaultValue={query.has('search') ? query.get('search') : ''}
+                value={search || query.has('search') ? query.get('search') : ''}
             />
+            {/* <XButton onClick={deleteSearch}>X</XButton> */}
             <Divider sx={{ height: 30, }} orientation="vertical" />
             <IconButton
                 type="submit"

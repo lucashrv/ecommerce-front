@@ -10,14 +10,12 @@ import {
     Box,
     Fab,
     Grid,
-    Pagination,
-    PaginationItem,
     Paper,
     Popper
 } from '@mui/material';
 import TablePagination from './TablePagination';
-import { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Title from '../Title';
 import Search from './Search';
 import {
@@ -54,43 +52,7 @@ export default function TablePanel(props) {
     const open = Boolean(anchorEl);
     const idOpen = open ? 'simple-popper' : undefined;
 
-    const location = useLocation();
-    const query = new URLSearchParams(location.search);
-    const page = parseInt(query.get('page') || '1', 10);
-    const search = query.get('search')
-
     const navigate = useNavigate()
-
-    useEffect(() => {
-        // Redirect to the page that has data
-        if (
-            typeof page === 'number'
-            && data?.count
-            && page !== Math.ceil(data?.count / rowsPerPage)
-            && data?.count < (rowsPerPage * page)
-        ) {
-            return navigate(`
-                ${path}?page=${Math.ceil(data?.count / rowsPerPage)}&${search ? 'search=' + search : ''}
-            `)
-        }
-    }, [data])
-
-    const setQueryParameters = (e) => {
-
-        const page = e.target.innerText
-        const navigateIconName = e.nativeEvent.target.dataset.testid // criar nova paginação front
-        if (page === '1') {
-            query.delete('page')
-        } else {
-            !query.has('page')
-                ? query.append('page', page)
-                : query.set('page', page)
-        }
-
-        query.sort()
-
-        navigate(location.pathname + '?' + query.toString());
-    }
 
     const toggleDelete = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget)
@@ -238,7 +200,10 @@ export default function TablePanel(props) {
                                 </Box>
                             </Popper>
                             <PaginationContainer>
-                                <TablePagination />
+                                <TablePagination
+                                    data={data}
+                                    path={path}
+                                />
                             </PaginationContainer>
                         </Sheet>
                     </TableContainer>

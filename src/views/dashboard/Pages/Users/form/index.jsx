@@ -29,7 +29,7 @@ export default function UserForm() {
     const { successSnackbar, errorSnackbar } = useSnackbars()
 
     const { data: userEdit } = useGetOneQuery({ id: params.id }, { skip: !id })
-    console.log(userEdit);
+
     const [
         signUp,
         { isLoading: signUpLoading }
