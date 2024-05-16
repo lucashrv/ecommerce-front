@@ -2,7 +2,7 @@ import axios from "axios"
 import env from '../schemas/envSchema';
 
 const axiosInstance = axios.create({
-    baseURL: env.VITE_DATABASE_URL,
+    baseURL: env.VITE_API_URL,
 })
 
 axiosInstance.interceptors.request.use(

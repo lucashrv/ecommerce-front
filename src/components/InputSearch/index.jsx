@@ -24,38 +24,38 @@ export default function InputSearch(props) {
 
   return (
     <ContainerSearch className='paper-search'>
-    <Paper
-      component="form"
-      sx={{
-        p: '2px 4px',
-        display: 'flex',
-        alignItems: 'center',
-        width: 250,
-        height: 30,
-        borderRadius: 15,
-      }}
-      onSubmit={onSubmit}
-    >
-      <Input
-        spellCheck="false"
-        type='text'
-        value={value}
-        onChange={onChange}
-      />
-      {!loading && <>
-        <ButtonIcon onSubmit={onSubmit} type="submit">
-          <SearchIcon
-            className='button-icon'
-          />
-        </ButtonIcon>
-      </>}
-      {loading && <>
-        <ButtonIcon>
-          <CircularProgress style={{ color: '#e00c0c', width: '20px', height: '20px' }} />
-        </ButtonIcon>
-      </>}
+      <Paper
+        component="form"
+        sx={{
+          p: '2px 4px',
+          display: 'flex',
+          alignItems: 'center',
+          width: 250,
+          height: 30,
+          borderRadius: 15,
+        }}
+        onSubmit={onSubmit}
+      >
+        <Input
+          spellCheck="false"
+          type='text'
+          value={value}
+          onChange={onChange}
+        />
+        {!loading && <>
+          <ButtonIcon onSubmit={onSubmit} type="submit">
+            <SearchIcon
+              className='button-icon'
+            />
+          </ButtonIcon>
+        </>}
+        {loading && <>
+          <ButtonIcon>
+            <CircularProgress style={{ color: '#e00c0c', width: '20px', height: '20px' }} />
+          </ButtonIcon>
+        </>}
 
-    </Paper >
+      </Paper >
     </ContainerSearch>
   )
 }

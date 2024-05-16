@@ -2,7 +2,7 @@ import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import env from './../../schemas/envSchema';
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: env.VITE_DATABASE_URL,
+    baseUrl: env.VITE_API_URL,
     prepareHeaders: (headers) => {
         const token = localStorage.getItem('token');
 

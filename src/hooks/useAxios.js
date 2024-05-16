@@ -8,7 +8,7 @@ const useAxios = () => {
   const [error, setError] = useState(null)
 
   const axiosInstance = axios.create({
-    baseURL: env.VITE_DATABASE_URL
+    baseURL: env.VITE_API_URL
   })
 
   axiosInstance.interceptors.request.use(
@@ -50,13 +50,13 @@ const useAxios = () => {
 
     get: async (url) => {
       try {
-          const response = await axiosInstance.get(url)
-          setData(response.data)
-          return data
+        const response = await axiosInstance.get(url)
+        setData(response.data)
+        return data
       } catch (error) {
-          throw error
+        throw error
       }
-  },
+    },
 
     update: async (url, data) => {
       try {
