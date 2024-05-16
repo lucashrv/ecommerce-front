@@ -15,6 +15,7 @@ import {
     Paper,
     Popper
 } from '@mui/material';
+import TablePagination from './TablePagination';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Title from '../Title';
@@ -41,7 +42,7 @@ export default function TablePanel(props) {
         rowsContent = [],
         data = [],
         loading = true,
-        // onRowsPerPageChange,
+        onRowsPerPageChange,
         rowsPerPage = 10,
         onDelete,
         loadingDelete
@@ -75,6 +76,7 @@ export default function TablePanel(props) {
     }, [data])
 
     const setQueryParameters = (e) => {
+
         const page = e.target.innerText
         const navigateIconName = e.nativeEvent.target.dataset.testid // criar nova paginação front
         if (page === '1') {
@@ -88,28 +90,6 @@ export default function TablePanel(props) {
         query.sort()
 
         navigate(location.pathname + '?' + query.toString());
-    }
-
-    function PaginationComponent() {
-        return (
-            <Pagination
-                page={page}
-                count={Math.ceil(data?.count / rowsPerPage) || 1}
-                size='small'
-                onClick={setQueryParameters}
-                renderItem={(item) => (
-
-                    <PaginationItem
-                        component={Link}
-                        sx={{
-                            border: '1px solid #a6a6a616'
-                        }}
-                        {...item}
-                    />
-                )
-                }
-            />
-        );
     }
 
     const toggleDelete = (event) => {
@@ -258,7 +238,7 @@ export default function TablePanel(props) {
                                 </Box>
                             </Popper>
                             <PaginationContainer>
-                                <PaginationComponent />
+                                <TablePagination />
                             </PaginationContainer>
                         </Sheet>
                     </TableContainer>
