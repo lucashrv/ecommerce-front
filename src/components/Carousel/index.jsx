@@ -55,15 +55,10 @@ export default function Carousel() {
         <>
             <CarouselContainer>
                 <CarouselContent>
-                    {items.map((item, index) => (
-                        index === currentIndex && (
-                            <CarouselItem
-                                key={index}
-                                src={item}
-                                alt={'carousel-item-' + index}
-                            />
-                        )
-                    ))}
+                    <CarouselItem
+                        src={items[currentIndex]}
+                        alt={'carousel-item-' + (currentIndex + 1)}
+                    />
                 </CarouselContent>
 
                 <ArrowsDiv>
